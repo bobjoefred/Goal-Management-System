@@ -1,0 +1,60 @@
+<!doctype html>
+<title>Item Catalog</title>
+<style>
+* {
+  box-sizing: border-box;
+}
+body {
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
+  margin: 0;
+}
+#main {
+  display: flex;
+  flex: 1;
+}
+#main > description {
+  flex: 1;
+}
+#main > catalog,
+#main > aside {
+  flex: 0 0 20vw;
+  background: yellow;
+}
+#main > catalog {
+  order: -1;
+}
+header, footer {
+  background: yellowgreen;
+  height: 20vh;
+}
+header, footer, description, catalog, aside {
+  padding: 1em;
+}
+</style>
+  <body>
+    <header>Header
+  <a href="loginpage.html">Login</a>
+    </header>
+
+  <div id="main">
+    <description>Description
+      </br>
+      </br>
+      <b2>New Item</b2>
+      </br>
+    <form action="/action_page.php">
+  Name:<br>
+  <input type="text" name="firstname">
+  <br>
+  Type:<br>
+  <input type="text" name="lastname">
+  <br><br>
+  <input type="submit">
+  </form>
+</description>
+    <catalog>Catalog</catalog>
+  </div>
+  <footer>Footer</footer>
+</body>

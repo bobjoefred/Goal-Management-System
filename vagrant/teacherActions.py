@@ -26,11 +26,17 @@ def makeStudent(name, goal):
 
     session.add(student)
     session.commit()
-    return "TODO: Implement", 200
+    return student
+    '''return "TODO: Implement", 200'''
 
-def getStudent(name):
+def db_init(self, conn_string):
+    self.engine = create_engine(conn_string or self.conn_string)
+    self.metadata.create_all(self.engine)
+    self.connection = self.engine.connect()
 
-    wantedStudent = session.query(Student).filter(Student.name == name)
+def getStudent(goal):
+
+    wantedStudent = session.query(Student).filter(Student.goal == goal)
     return wantedStudent
     '''
     note to self: current problem for testing is lack of connection, must add instance of object and stuff(dal stuff maybe?)

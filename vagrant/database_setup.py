@@ -21,8 +21,13 @@ class Student(Base):
     name = Column(String(80), nullable=False)
     student_id = Column(Integer, primary_key=True)
     goal = Column(String(250))
+    def db_init(self, conn_string): 2
+        self.engine = create_engine(conn_string or self.conn_string)
+        self.metadata.create_all(self.engine)
+        self.connection = self.engine.connect()
 
-    restaurant = relationship(Restaurant)
+dal = Student()
+
 
 
 engine = create_engine('sqlite:///teacheractions.db')

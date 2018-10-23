@@ -3,6 +3,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from database_setup import Base, StudentCreator, Student
 from teacherActions import makeStudent
+from teacherActions import getStudent
 import unittest
 
 app = Flask(__name__)
@@ -17,11 +18,11 @@ dal = Student()
 class TestApp(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        dal.db_init('sqlite:///:memory:') '''dal undefined right now'''
+        dal.db_init('sqlite:///:memory:')
     def test_CreatingStudent(self):
-        makeStudent("test name", "yeet on em")
-        grab = getStudent("test name")
-        self.assertEqual(grab, "test name")
+        testStudent = makeStudent("test name", "yeet on me")
+        grab = getStudent("yeet on me")
+        self.assertEqual(testStudent.name, grab.goal)
 
 
 

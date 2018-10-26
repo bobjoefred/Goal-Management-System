@@ -47,8 +47,8 @@ def db_init(self, conn_string):
         return customer_list
         '''
 
-def assignGoal(name, assignedGoal):
-    editedStudent = session.query(Student).filter(Student.name == name)
+def assignGoal(editedStudent, assignedGoal, session):
+#    editedStudent = session.query(Student).filter(Student.name == name).first()
     editedStudent.goal = assignedGoal
     session.add(editedStudent)
     session.commit()

@@ -16,10 +16,7 @@ Base.metadata.bind = engine
 DBSession = sessionmaker(bind=engine)
 session1 = DBSession()
 dal = Student()
-
-def getStudent(goal, session):
-    wantedStudent = session.query(Student).filter(Student.goal == goal)
-    return wantedStudent.name
+testStudent2 = makeStudent("test name", " ", session1)
 TEST_DB = 'testing.db'
 class TestApp(unittest.TestCase):
     # executed prior to each test
@@ -35,6 +32,9 @@ class TestApp(unittest.TestCase):
     def tearDown(self):
         pass
 
+    def getStudent(self, goal, session):
+        wantedStudent = session.query(Student).filter(Student.goal == goal).first()
+        return wantedStudent.name
 
     def test_main_page(self):
         response = self.app.get('/', follow_redirects=True)
@@ -42,12 +42,12 @@ class TestApp(unittest.TestCase):
 
     def test_CreatingStudent(self):
         testStudent = makeStudent("test name", "yeet on me", session1)
-        grab = getStudent("yeet on me", session1)
-        self.assertEqual(testStudent.name, getStudent("yeet on me"))
+        grab = self.getStudent("yeet on me", session1)
+        self.assertEqual(testStudent.name, grab)
 
     def test_editGoal(self):
-        testStudent2 = makeStudent("test name", " ", session1)
-        assignGoal("test name", "test goal")
+        #testStudent2 = makeStudent("test name", " ", session1)
+        assignGoal(testStudent2, "test goal", session1)
         self.assertEqual("test goal", testStudent2.goal)
 
 

@@ -34,7 +34,7 @@ class TestApp(unittest.TestCase):
 
     def getStudent(self, goal, session):
         wantedStudent = session.query(Student).filter(Student.goal == goal).first()
-        return wantedStudent.name
+        return wantedStudent
 
     def test_main_page(self):
         response = self.app.get('/', follow_redirects=True)
@@ -43,12 +43,13 @@ class TestApp(unittest.TestCase):
     def test_CreatingStudent(self):
         testStudent = makeStudent("test name", "yeet on me", session1)
         grab = self.getStudent("yeet on me", session1)
-        self.assertEqual(testStudent.name, grab)
+        self.assertEqual(testStudent.name, grab.name)
 
     def test_editGoal(self):
-        testStudent2 = makeStudent("test name", " ", session1)
-        assignGoal("test name", "test goal", session1)
-        self.assertEqual("test goal", testStudent2.goal)
+        testStudent2 = makeStudent("test name", "l", session1)
+        #grab = self.getStudent("l", session1)
+        assignGoal("test name", "l", session1)
+        self.assertEqual("l", testStudent2.goal)
 
 
 if __name__ == '__main__':

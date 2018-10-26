@@ -10,6 +10,11 @@ import { HeaderComponent } from './components/header/header.component';
 import { HomeComponent } from './components/home/home.component';
 import { FooterComponent } from './components/footer/footer.component';
 
+const appRoutes: Routes = [
+  { path: 'home', component: HomeComponent },
+  { path: '', component: HomeComponent }
+]
+
 @NgModule({
   declarations: [
     AppComponent,

@@ -16,15 +16,19 @@ const appRoutes: Routes = [
 ]
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    HeaderComponent,
-    HomeComponent,
-    FooterComponent
-  ],
-  imports: [
-    BrowserModule
-  ],
+  declarations: [
+    AppComponent,
+    FooterComponent,
+    HeaderComponent,
+    HomeComponent,
+  ],
+  imports: [
+    BrowserModule,
+    FormsModule,
+    HttpModule,
+    RouterModule.forRoot(appRoutes)
+]
+
   providers: [],
   bootstrap: [AppComponent]
 })

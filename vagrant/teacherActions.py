@@ -49,6 +49,9 @@ def db_init(self, conn_string):
 
 def assignGoal(studentName, assignedGoal, session):
     editedStudent = session.query(Student).filter(Student.name == studentName).first()
+
+    print("indicator")
+    print(assignedGoal)
     editedStudent.goal = assignedGoal
     session.add(editedStudent)
     session.commit()

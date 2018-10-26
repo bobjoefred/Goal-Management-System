@@ -31,7 +31,11 @@ class TestApp(unittest.TestCase):
     # executed after each test
     def tearDown(self):
         pass
-
+    def assignGoal(studentName, assignedGoal, session):
+        editedStudent = session.query(Student).filter(Student.name == studentName).first()
+        editedStudent.goal += assignedGoal
+        session.add(editedStudent)
+        session.commit()
     def getStudent(self, goal, session):
         wantedStudent = session.query(Student).filter(Student.goal == goal).first()
         return wantedStudent
@@ -48,8 +52,8 @@ class TestApp(unittest.TestCase):
     def test_editGoal(self):
         testStudent2 = makeStudent("test name", "l", session1)
         #grab = self.getStudent("l", session1)
-        assignGoal("test name", "l", session1)
-        self.assertEqual("l", testStudent2.goal)
+        assignGoal("test name", "k", session1)
+        self.assertEqual("k", testStudent2.goal)
 
 
 if __name__ == '__main__':

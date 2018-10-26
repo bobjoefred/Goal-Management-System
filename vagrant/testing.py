@@ -3,12 +3,12 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from database_setup import Base, StudentCreator, Student
 from teacherActions import makeStudent
-from teacherActions import getStudent, session, app
+from teacherActions import session, app, assignGoal
 import unittest
 import os
 
 app = Flask(__name__)
-    
+
 engine = create_engine('sqlite:///testing.db')
 
 Base.metadata.bind = engine
@@ -17,6 +17,9 @@ DBSession = sessionmaker(bind=engine)
 session = DBSession()
 dal = Student()
 
+def getStudent(goal):
+    wantedStudent = session.query(Student).filter(Student.goal == goal)
+    return wantedStudent.name
 TEST_DB = 'testing.db'
 class TestApp(unittest.TestCase):
     # executed prior to each test
@@ -24,11 +27,10 @@ class TestApp(unittest.TestCase):
         app.config['TESTING'] = True
         app.config['WTF_CSRF_ENABLED'] = False
         app.config['DEBUG'] = False
-        app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + \
-            os.path.join(app.config['testing.db'], TEST_DB)
+        app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///testing.db'
         self.app = app.test_client()
-        session.drop_all()
-        session.create_all()
+        # session.drop_all()
+        # session.create_all()
     # executed after each test
     def tearDown(self):
         pass
@@ -41,7 +43,13 @@ class TestApp(unittest.TestCase):
     def test_CreatingStudent(self):
         testStudent = makeStudent("test name", "yeet on me")
         grab = getStudent("yeet on me")
-        self.assertEqual(testStudent.name, grab.goal)
+        self.assertEqual(testStudent.name, getStudent("yeet on me"))
+
+    def test_editGoal(self):
+        testStudent2 = makeStudent("test name", " ")
+        assignGoal("test name", "test goal")
+        self.assertEqual("test goal", testStudent2.goal)
+
 
 if __name__ == '__main__':
     unittest.main()

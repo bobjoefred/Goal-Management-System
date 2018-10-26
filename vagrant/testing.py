@@ -14,10 +14,10 @@ engine = create_engine('sqlite:///testing.db')
 Base.metadata.bind = engine
 
 DBSession = sessionmaker(bind=engine)
-session = DBSession()
+session1 = DBSession()
 dal = Student()
 
-def getStudent(goal):
+def getStudent(goal, session):
     wantedStudent = session.query(Student).filter(Student.goal == goal)
     return wantedStudent.name
 TEST_DB = 'testing.db'
@@ -41,12 +41,12 @@ class TestApp(unittest.TestCase):
         self.assertEqual(response.status_code, 200)
 
     def test_CreatingStudent(self):
-        testStudent = makeStudent("test name", "yeet on me")
-        grab = getStudent("yeet on me")
+        testStudent = makeStudent("test name", "yeet on me", session1)
+        grab = getStudent("yeet on me", session1)
         self.assertEqual(testStudent.name, getStudent("yeet on me"))
 
     def test_editGoal(self):
-        testStudent2 = makeStudent("test name", " ")
+        testStudent2 = makeStudent("test name", " ", session1)
         assignGoal("test name", "test goal")
         self.assertEqual("test goal", testStudent2.goal)
 

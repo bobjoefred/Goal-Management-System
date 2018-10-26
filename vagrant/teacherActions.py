@@ -19,14 +19,14 @@ def createStudent(student_id):
     session.add(newStudent)
     session.commit()
 '''
-def makeStudent(name, goal):
+def makeStudent(name, goal, sesh):
     if(name == None or goal == None):
         return "Must have a first name and goal, 404"
     else:
         student = Student(name = name, goal = goal)
 
-    session.add(student)
-    session.commit()
+    sesh.add(student)
+    sesh.commit()
     return student
     '''return "TODO: Implement", 200'''
 

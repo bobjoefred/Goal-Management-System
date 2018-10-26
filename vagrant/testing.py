@@ -16,7 +16,7 @@ Base.metadata.bind = engine
 DBSession = sessionmaker(bind=engine)
 session1 = DBSession()
 dal = Student()
-testStudent2 = makeStudent("test name", " ", session1)
+#testStudent2 = makeStudent("test name", " ", session1)
 TEST_DB = 'testing.db'
 class TestApp(unittest.TestCase):
     # executed prior to each test
@@ -46,8 +46,8 @@ class TestApp(unittest.TestCase):
         self.assertEqual(testStudent.name, grab)
 
     def test_editGoal(self):
-        #testStudent2 = makeStudent("test name", " ", session1)
-        assignGoal(testStudent2, "test goal", session1)
+        testStudent2 = makeStudent("test name", " ", session1)
+        assignGoal("test name", "test goal", session1)
         self.assertEqual("test goal", testStudent2.goal)
 
 

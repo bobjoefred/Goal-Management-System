@@ -39,6 +39,8 @@ h2 {
   width: 100%;
   min-height: 100%;
   padding: 20px;
+  margin-left: 100%;
+  padding-top: 80px;
 }
 
 #formContent {
@@ -53,6 +55,7 @@ h2 {
   -webkit-box-shadow: 0 30px 60px 0 rgba(0,0,0,0.3);
   box-shadow: 0 30px 60px 0 rgba(0,0,0,0.3);
   text-align: center;
+  float: center;
 }
 
 #formFooter {

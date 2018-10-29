@@ -3,6 +3,8 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from database_setup import Base, StudentCreator, Student
 
+
+
 app = Flask(__name__)
 
 engine = create_engine('sqlite:///teacheractions.db')
@@ -50,9 +52,11 @@ def db_init(self, conn_string):
 def assignGoal(studentName, assignedGoal, session):
     editedStudent = session.query(Student).filter(Student.name == studentName).first()
 
-    print("indicator")
-    print(assignedGoal)
     editedStudent.goal = assignedGoal
+
+    #print("indicator")
+    #print(assignedGoal)
+    #print(editedStudent.goal)
     session.add(editedStudent)
     session.commit()
 

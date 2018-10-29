@@ -40,19 +40,22 @@ class TestApp(unittest.TestCase):
         wantedStudent = session.query(Student).filter(Student.goal == goal).first()
         return wantedStudent
 
-    def test_main_page(self):
-        response = self.app.get('/', follow_redirects=True)
-        self.assertEqual(response.status_code, 200)
+#    def test_main_page(self):
+#        response = self.app.get('/', follow_redirects=True)
+#        self.assertEqual(response.status_code, 200)
 
     def test_CreatingStudent(self):
         testStudent = makeStudent("test name", "yeet on me", session1)
         grab = self.getStudent("yeet on me", session1)
+    #    print("indicator 2")
+    #    print(testStudent.name)
+    #    print (grab.name)
         self.assertEqual(testStudent.name, grab.name)
 
     def test_editGoal(self):
-        testStudent2 = makeStudent("test name", "l", session1)
+        testStudent2 = makeStudent("test name1", "l", session1)
         #grab = self.getStudent("l", session1)
-        assignGoal("test name", "k", session1)
+        assignGoal("test name1", "k", session1)
         self.assertEqual("k", testStudent2.goal)
 
 

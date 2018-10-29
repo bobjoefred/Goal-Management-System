@@ -9,10 +9,12 @@ import { AppComponent } from './app.component';
 import { HeaderComponent } from './components/header/header.component';
 import { HomeComponent } from './components/home/home.component';
 import { FooterComponent } from './components/footer/footer.component';
+import { TeachersComponent } from './components/teachers/teachers.component';
 
 const appRoutes: Routes = [
   { path: 'home', component: HomeComponent },
-  { path: '', component: HomeComponent }
+  { path: '', component: HomeComponent },
+  {path: 'teachers', component: TeachersComponent}
 ]
 
 @NgModule({
@@ -21,13 +23,14 @@ const appRoutes: Routes = [
     FooterComponent,
     HeaderComponent,
     HomeComponent,
+    TeachersComponent,
   ],
   imports: [
     BrowserModule,
     FormsModule,
     HttpModule,
     RouterModule.forRoot(appRoutes)
-]
+],
 
   providers: [],
   bootstrap: [AppComponent]

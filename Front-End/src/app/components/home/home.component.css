@@ -27,7 +27,14 @@ h2 {
   color: #cccccc;
 }
 
-
+.homeheader {
+  text-align: center;
+  font-size: 35px;
+  font-weight: 600;
+  padding-left: 50px;
+  padding-top: 50px;
+  color:#60a0ff;
+}
 
 /* STRUCTURE */
 
@@ -39,8 +46,7 @@ h2 {
   width: 100%;
   min-height: 100%;
   padding: 20px;
-  margin-left: 100%;
-  padding-top: 80px;
+  margin-left: 190%;
 }
 
 #formContent {
@@ -254,6 +260,8 @@ input[type=text]:placeholder {
 
 h1{
     color:#60a0ff;
+    text-align: center;
+    font-size: 25px;
 }
 
 /* OTHERS */

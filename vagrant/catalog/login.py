@@ -8,6 +8,7 @@ from oauth2client.client import flow_from_clientsecrets
 from oauth2client.client import FlowExchangeError
 import json
 import requests
+from flask import make_response
 import random, string
 app = Flask(__name__)
 
@@ -91,5 +92,12 @@ def gdisconnect():
     response = make_response(json.dumps('Disconnected successfully'), 200)
     response.headers['Content-Type'] = 'application/json'
     return response
-if __name__ == 'login.py':
-    app.run(host='0.0.0.0', port=1234)
+
+@app.route('/')
+def homepage():
+    return render_template('logintest.html')
+
+if __name__ == '__main__':
+    app.secret_key = 'super_secret_key'
+    app.debug = True
+    app.run(host='0.0.0.0', port=8080)

@@ -96,6 +96,15 @@ def gdisconnect():
 @app.route('/')
 def homepage():
     return render_template('logintest.html')
+    return "not yet logged in"
+
+@app.route('/loggedin')
+def loggedin():
+    if 'username' in login_session:
+        return render_template('loggedin.html')
+        return "Successfully logged in"
+
+
 
 if __name__ == '__main__':
     app.secret_key = 'super_secret_key'

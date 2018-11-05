@@ -14,6 +14,29 @@ Base.metadata.bind = engine
 DBSession = sessionmaker(bind=engine)
 session = DBSession()
 
+@app.route('/')
+def frontPage():
+        students = session.query(Student).all()
+        output = ""
+                # Objective 3 Step 1 - Create a Link to create a new menu item
+        output += "<a href = '/restaurants/new' > Make a New Student Here </a></br></br>"
+
+        self.send_response(200)
+        self.send_header('Content-type', 'text/html')
+        self.end_headers()
+        output += "<html><body>"
+        for student in students:
+            output += students.name
+            output += "</br>"
+            # Objective 2 -- Add Edit and Delete Links
+            # Objective 4 -- Replace Edit href
+            output += "<a href ='/students/%s/edit' >Edit </a> " % restaurant.id
+            output += "</br>"
+            output += "<a href =' #'> Delete </a>"
+            output += "</br></br></br>"
+            output += "</body></html>"
+            self.wfile.write(output)
+        return
 
 '''
 def createStudent(student_id):
@@ -31,14 +54,14 @@ def makeStudent(name, goal, sesh):
     sesh.commit()
     return student
     '''return "TODO: Implement", 200'''
-
+'''
 def db_init(self, conn_string):
     self.engine = create_engine(conn_string or self.conn_string)
     self.metadata.create_all(self.engine)
     self.connection = self.engine.connect()
+'''
 
-
-    '''
+'''
     note to self: current problem for testing is lack of connection, must add instance of object and stuff(dal stuff maybe?)
     student_list = []
         customer_info = { "name" : student.name
@@ -47,7 +70,7 @@ def db_init(self, conn_string):
                         }
         customer_list.append(customer_info)
         return customer_list
-        '''
+'''
 
 def assignGoal(studentName, assignedGoal, session):
     editedStudent = session.query(Student).filter(Student.name == studentName).first()

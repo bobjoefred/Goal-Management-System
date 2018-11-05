@@ -15,7 +15,8 @@ import { StudentsComponent } from './components/students/students.component';
 const appRoutes: Routes = [
   { path: 'home', component: HomeComponent },
   { path: '', component: HomeComponent },
-  {path: 'teachers', component: TeachersComponent}
+  {path: 'teachers', component: TeachersComponent},
+  {path: 'students', component: StudentsComponent}
 ]
 
 @NgModule({

@@ -32,3 +32,8 @@
 .button1:hover {
     background-color: #8886 ;
 }
+
+#edit-date{
+float: right;
+padding-right: 560px;
+}

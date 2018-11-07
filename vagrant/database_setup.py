@@ -23,6 +23,7 @@ class Student(Base):
     name = Column(String(80), nullable=False)
     id = Column(Integer, primary_key=True)
     #goal = Column(String(250))
+    goals = relationship('Student', secondary = 'student_goal_link')
     def db_init(self, conn_string):
             self.engine = create_engine(conn_string or self.conn_string)
             self.metadata.create_all(self.engine)
@@ -33,11 +34,17 @@ class Goal(Base):
     id = Column(Integer, primary_key=True)
     description = Column(String(250))
     name = Column(String(80), nullable=False)
-    student_id = Column(Integer, ForeignKey('student.id'))
-    student = relationship(Student)
-    assignedDate = Column(DateTime, default = func.now())
+#    student = relationship(Student)
+#    assignedDate = Column(DateTime, default = func.now())
     dueDate = Column(DateTime)
-
+    createdBy = Column(Integer, ForeignKey('teacher.id'))
+    teacher = relationship(Teacher)
+    students = relationship(Student, secondary = 'student_goal_link')
+    #the createdBy stuff is login related
+class StudentGoalLink(Base):
+    __tablename__= 'student_goal_link'
+    student_id = Column(Integer, ForeignKey('student.id'), primary_key = True)
+    goal_id = Column(Integer, ForeignKey('goal.id'), primary_key = True)
 
 dal = Student()
 

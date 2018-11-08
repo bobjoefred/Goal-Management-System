@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request, redirect, url_for, jsonify
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-from database_setup import Base, StudentCreator, Student
+from database_setup import Base, Teacher, Student
 from teacherActions import makeStudent
 from teacherActions import session, app, assignGoal
 import unittest
@@ -31,13 +31,15 @@ class TestApp(unittest.TestCase):
     # executed after each test
     def tearDown(self):
         pass
+    '''
     def assignGoal(studentName, assignedGoal, session):
         editedStudent = session.query(Student).filter(Student.name == studentName).first()
         editedStudent.goal += assignedGoal
         session.add(editedStudent)
         session.commit()
-    def getStudent(self, goal, session):
-        wantedStudent = session.query(Student).filter(Student.goal == goal).first()
+    '''
+    def getStudent(self, name, session):
+        wantedStudent = session.query(Student).filter(Student.name == name).first()
         return wantedStudent
 
 #    def test_main_page(self):
@@ -45,19 +47,21 @@ class TestApp(unittest.TestCase):
 #        self.assertEqual(response.status_code, 200)
 
     def test_CreatingStudent(self):
-        testStudent = makeStudent("test name", "yeet on me", session1)
-        grab = self.getStudent("yeet on me", session1)
+        testStudent = makeStudent("test name", session1)
+        grab = self.getStudent("test name", session1)
+        print("indicatorrrr")
+        print(grab.id)
     #    print("indicator 2")
     #    print(testStudent.name)
     #    print (grab.name)
         self.assertEqual(testStudent.name, grab.name)
-
+    '''
     def test_editGoal(self):
         testStudent2 = makeStudent("test name1", "l", session1)
         #grab = self.getStudent("l", session1)
         assignGoal("test name1", "k", session1)
         self.assertEqual("k", testStudent2.goal)
-
+    '''
 
 if __name__ == '__main__':
     unittest.main()

@@ -1,16 +1,17 @@
 import os
 import sys
-import datetime
+from datetime import datetime
 from sqlalchemy import Column, ForeignKey, Integer, String
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
 from sqlalchemy import create_engine
+from sqlalchemy import DateTime
 
 
 Base = declarative_base()
 
 
-class StudentCreator(Base):
+class Teacher(Base):
     __tablename__ = 'teacher'
 
     id = Column(Integer, primary_key=True)
@@ -23,7 +24,7 @@ class Student(Base):
     name = Column(String(80), nullable=False)
     id = Column(Integer, primary_key=True)
     #goal = Column(String(250))
-    goals = relationship('Student', secondary = 'student_goal_link')
+    goals = relationship('Goal', secondary = 'student_goal_link')
     def db_init(self, conn_string):
             self.engine = create_engine(conn_string or self.conn_string)
             self.metadata.create_all(self.engine)
@@ -36,7 +37,7 @@ class Goal(Base):
     name = Column(String(80), nullable=False)
 #    student = relationship(Student)
 #    assignedDate = Column(DateTime, default = func.now())
-    dueDate = Column(DateTime)
+    dueDate = Column(DateTime(), nullable = True)
     createdBy = Column(Integer, ForeignKey('teacher.id'))
     teacher = relationship(Teacher)
     students = relationship(Student, secondary = 'student_goal_link')
@@ -48,7 +49,7 @@ class StudentGoalLink(Base):
 
 dal = Student()
 
-engine = create_engine('sqlite:///teacheractions.db')
+engine = create_engine('sqlite:///testing.db')
 
 
 Base.metadata.create_all(engine)

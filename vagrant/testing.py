@@ -1,9 +1,10 @@
 from flask import Flask, render_template, request, redirect, url_for, jsonify
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-from database_setup import Base, Teacher, Student
+from database_setup import Base, Teacher, Student, Goal
 from teacherActions import makeStudent
-from teacherActions import session, app, assignGoal
+from teacherActions import session, app, assignGoal, createGoal
+from sqlalchemy import DateTime
 import unittest
 import os
 
@@ -42,6 +43,9 @@ class TestApp(unittest.TestCase):
         wantedStudent = session.query(Student).filter(Student.name == name).first()
         return wantedStudent
 
+    def getGoal(self, name, session):
+        wantedGoal = session.query(Goal).filter(Goal.name == name).first()
+        return wantedGoal
 #    def test_main_page(self):
 #        response = self.app.get('/', follow_redirects=True)
 #        self.assertEqual(response.status_code, 200)
@@ -49,12 +53,31 @@ class TestApp(unittest.TestCase):
     def test_CreatingStudent(self):
         testStudent = makeStudent("test name", session1)
         grab = self.getStudent("test name", session1)
-        print("indicatorrrr")
+        testStudentID = makeStudent("second student", session1)
+        #test id create
+        print("indicator for students")
         print(grab.id)
+        print(testStudentID.id)
     #    print("indicator 2")
     #    print(testStudent.name)
     #    print (grab.name)
         self.assertEqual(testStudent.name, grab.name)
+    def test_CreatingGoals(self):
+        testGoal = createGoal("test goal", "some description", "2018-11-8", session1)
+        grab = self.getGoal("test goal", session1)
+    #    print(testGoal.dueDate)
+        print("indicator for goals")
+        print(testGoal.name)
+        self.assertEqual(testGoal.name, grab.name)
+        self.assertEqual(testGoal.description, grab.description)
+    def test_assigningGoals(self):
+        testGoal = createGoal("test goal", "some description", "2018-11-8", session1)
+        testStudent = makeStudent("test name", session1)
+        assignGoal(testStudent, testGoal, session1)
+        print("indicator for assigning goals")
+        print(testStudent.goals[0].name)
+
+
     '''
     def test_editGoal(self):
         testStudent2 = makeStudent("test name1", "l", session1)

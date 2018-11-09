@@ -1,7 +1,8 @@
 from flask import Flask, render_template, request, redirect, url_for, jsonify
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-from database_setup import Base, Teacher, Student
+from database_setup import Base, Teacher, Student, Goal
+from sqlalchemy import DateTime
 
 
 
@@ -15,14 +16,10 @@ DBSession = sessionmaker(bind=engine)
 session = DBSession()
 
 def makeStudent(name, sesh):
-    totalStudents = session.query(Student).all()
-    studentList = []
-    for student in totalStudents:
-        studentList.append(student)
-    if(name == None or goal == None):
-        return "Must have a first name and goal, 404"
+    if(name == None):
+        return "Must have a name, 404"
     else:
-        student = Student(name = name, id = lens(studentList) + 1)
+        student = Student(name = name)
 
     sesh.add(student)
     sesh.commit()
@@ -31,19 +28,22 @@ def makeStudent(name, sesh):
 #creating a goal and assigning seperate
 #to assign a goal, create a new goal
 #def createGoal():
+def createGoal(name, description, dueDate, session):
+    if(name == None or description == None):
+        return "Missing name or description, 404"
+    else:
+        goal = Goal(name = name, description = description)
+        #goal.description = description
+#    date = DateTime(dueDate)
+#    goal.dueDate = dueDate
 
-def assignGoal(studentName, assignedGoal, session):
-    editedStudent = session.query(Student).filter(Student.name == studentName).first()
-
-    editedStudent.goal = assignedGoal
-
-    #print("indicator")
-    #print(assignedGoal)
-    #print(editedStudent.goal)
-    session.add(editedStudent)
+    session.add(goal)
     session.commit()
-
-
+    return goal
+def assignGoal(student, goal, session):
+    student.goals.append(goal)
+    session.add(student)
+    session.commit()
 
 if __name__ == '__main__':
     app.debug = True

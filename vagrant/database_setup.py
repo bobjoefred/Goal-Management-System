@@ -8,13 +8,14 @@ from sqlalchemy import create_engine
 from sqlalchemy import DateTime
 
 
+
 Base = declarative_base()
 
 
 class Teacher(Base):
     __tablename__ = 'teacher'
 
-    id = Column(Integer, primary_key=True)
+    id = Column(Integer, primary_key=True, autoincrement = True)
     teacherName = Column(String(250), nullable=False)
 
 
@@ -22,7 +23,7 @@ class Student(Base):
     __tablename__ = 'student'
 
     name = Column(String(80), nullable=False)
-    id = Column(Integer, primary_key=True)
+    id = Column(Integer, primary_key=True, autoincrement = True)
     #goal = Column(String(250))
     goals = relationship('Goal', secondary = 'student_goal_link')
     def db_init(self, conn_string):
@@ -32,12 +33,13 @@ class Student(Base):
 
 class Goal(Base):
     __tablename__ = 'goal'
-    id = Column(Integer, primary_key=True)
+    id = Column(Integer, primary_key=True, autoincrement = True)
     description = Column(String(250))
     name = Column(String(80), nullable=False)
 #    student = relationship(Student)
 #    assignedDate = Column(DateTime, default = func.now())
     dueDate = Column(DateTime(), nullable = True)
+#deal with "createdBy" later, practically useless as of 11/8/18
     createdBy = Column(Integer, ForeignKey('teacher.id'))
     teacher = relationship(Teacher)
     students = relationship(Student, secondary = 'student_goal_link')

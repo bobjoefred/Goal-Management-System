@@ -18,6 +18,7 @@ def showLogin():
                     x in xrange(32))
     login_session['state'] = state
     return render_template('logintest.html', STATE = state)
+
 @app.route('/gconnect', methods=['POST'])
 def gconnect():
     if request.args.get('state') != login_session['state']:
@@ -91,7 +92,7 @@ def gdisconnect():
         del login_session['gplus_id']
     response = make_response(json.dumps('Disconnected successfully'), 200)
     response.headers['Content-Type'] = 'application/json'
-    return response
+    return response 
 
 @app.route('/')
 def homepage():

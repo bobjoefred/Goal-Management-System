@@ -19,30 +19,30 @@
 </span>
 </div>
 <script>
-fuction signInCallback(authResult){
+function signInCallback(authResult){
   if (authResult['code']) {
     $('#signinButton').attr('style', 'display: none');
     $.ajax({
       type: 'POST',
       url: '/gconnect?state={{STATE}}',
       processData: false,
-      data: authResult['code']
-      contentType: 'application/octet-stream; charset=utf-8'
+      data: authResult['code'],
+      contentType: 'application/octet-stream; charset=utf-8',
       success: function(result){
         if (result) {
           $('#result').html('Success!')
           setTimeout(function() {
-            window.location.href = "/main";
-          } );
-          else if (authResult['error']) {
+            window.location.href = "/loggedin";
+          }, 4000);
+          } else if (authResult['error']) {
             console.log('Error in login' + authResult['error'])
+          } else {
+            $('#result').html('Failed to call serverside.');
           }
-          }
-        }
-      };
-    });
-
-  };
+          } 
+        });
+  }
+}
 
 </script>
   </body>

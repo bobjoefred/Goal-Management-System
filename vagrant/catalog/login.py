@@ -16,11 +16,14 @@ app = Flask(__name__)
 def showLogin():
     state = ''.join(random.choice(string.ascii_uppercase + string.digits) for
                     x in xrange(32))
+    print(state)
     login_session['state'] = state
     return render_template('logintest.html', STATE = state)
 
 @app.route('/gconnect', methods=['POST'])
 def gconnect():
+    print(login_session)
+    print(request)
     if request.args.get('state') != login_session['state']:
         response = make_response(json.dumps('Invalid state'), 401)
         response.headers['Content-Type'] = 'application/json'
@@ -41,7 +44,8 @@ def gconnect():
     result = json.loads(h.request(url, 'GET')[1])
     if result.get('error') is not None:
         response = make_response(json.dumps(results.get('error')), 50)
-    response.headers['Content-Type'] = '/application/json'
+        response.headers['Content-Type'] = '/application/json'
+        return response
     gplus_id = credentials.id_token['sub']
     if result['user_id'] != gplus_id:
         response = make_response(
@@ -58,16 +62,17 @@ def gconnect():
     login_session['gplus_id'] = gplus_id
     userinfo_url = "https://www.googleapis.com/oauth2/v1/userinfo"
     params = {'access_token': credentials.access_token, 'alt': 'json'}
-    answer = request.get(userinfo_url, params=params)
-    data = json.loads(answer.text)
-    login_session['username'] = data["name"]
-    login_session['email'] = data["email"]
+    answer = requests.get(userinfo_url, params=params)
+    data = answer.json()
+    print("Data is")
+    print(data)
+    login_session['username'] = data['name']
+    login_session['email'] = data['email']
 
     output = ''
     output += '<h1> Welcome'
     output += login_session['username']
     output += '</h1>'
-    flash('you are logged in, '%login_session['username'])
     return output
 
 @app.route('/gdisconnect')

@@ -22,6 +22,8 @@ def showLogin():
 
 @app.route('/gconnect', methods=['POST'])
 def gconnect():
+    CLIENT_ID = json.loads(
+        open('client_secrets.json', 'r').read())['web']['client_id']
     print(login_session)
     print(request)
     if request.args.get('state') != login_session['state']:
@@ -43,7 +45,7 @@ def gconnect():
     h = httplib2.Http()
     result = json.loads(h.request(url, 'GET')[1])
     if result.get('error') is not None:
-        response = make_response(json.dumps(results.get('error')), 50)
+        response = make_response(json.dumps(results.get('error')), 500)
         response.headers['Content-Type'] = '/application/json'
         return response
     gplus_id = credentials.id_token['sub']
@@ -66,7 +68,7 @@ def gconnect():
     data = answer.json()
     print("Data is")
     print(data)
-    login_session['username'] = data['name']
+    login_session['username'] = data['email']
     login_session['email'] = data['email']
 
     output = ''

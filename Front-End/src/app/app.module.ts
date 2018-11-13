@@ -18,6 +18,7 @@ const appRoutes: Routes = [
   { path: '', component: HomeComponent },
   {path: 'teachers', component: TeachersComponent},
   {path: 'students', component: StudentsComponent}
+  {path: 'individual', component: IndividualComponent}
 ]
 
 @NgModule({

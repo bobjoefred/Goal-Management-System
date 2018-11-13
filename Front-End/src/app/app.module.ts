@@ -11,6 +11,7 @@ import { HomeComponent } from './components/home/home.component';
 import { FooterComponent } from './components/footer/footer.component';
 import { TeachersComponent } from './components/teachers/teachers.component';
 import { StudentsComponent } from './components/students/students.component';
+import { IndividualComponent } from './components/individual/individual.component';
 
 const appRoutes: Routes = [
   { path: 'home', component: HomeComponent },
@@ -27,6 +28,7 @@ const appRoutes: Routes = [
     HomeComponent,
     TeachersComponent,
     StudentsComponent,
+    IndividualComponent,
   ],
   imports: [
     BrowserModule,

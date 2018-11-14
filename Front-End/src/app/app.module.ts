@@ -14,7 +14,7 @@ import { StudentsComponent } from './components/students/students.component';
 import { IndividualComponent } from './components/individual/individual.component';
 
 const appRoutes: Routes = [
-  { path: 'home', component: HomeComponent },
+  {path: 'home', component: HomeComponent },
   {path: 'teachers', component: TeachersComponent},
   {path: 'students', component: StudentsComponent},
   {path: 'individual', component: IndividualComponent}

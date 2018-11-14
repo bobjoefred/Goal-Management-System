@@ -15,9 +15,8 @@ import { IndividualComponent } from './components/individual/individual.componen
 
 const appRoutes: Routes = [
   { path: 'home', component: HomeComponent },
-  { path: '', component: HomeComponent },
   {path: 'teachers', component: TeachersComponent},
-  {path: 'students', component: StudentsComponent}
+  {path: 'students', component: StudentsComponent},
   {path: 'individual', component: IndividualComponent}
 ]
 

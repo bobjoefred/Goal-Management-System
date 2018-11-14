@@ -12,6 +12,9 @@ from flask import make_response
 import random, string
 app = Flask(__name__)
 
+CLIENT_ID = json.loads(
+    open('client_secrets.json', 'r').read())['web']['client_id']
+
 @app.route('/login')
 def showLogin():
     state = ''.join(random.choice(string.ascii_uppercase + string.digits) for
@@ -22,8 +25,7 @@ def showLogin():
 
 @app.route('/gconnect', methods=['POST'])
 def gconnect():
-    CLIENT_ID = json.loads(
-        open('client_secrets.json', 'r').read())['web']['client_id']
+
     print(login_session)
     print(request)
     if request.args.get('state') != login_session['state']:
@@ -54,13 +56,18 @@ def gconnect():
         json.dumps("Token User ID doesn't match given"), 401)
         response.headers['Content-Type'] = 'application/json'
         return response
-    stored_credentials = login_session.get('credentials')
+    if result['issued_to'] != CLIENT_ID:
+        response = make_response(json.dumps("Token Client ID does not match"), 401)
+        print "Token Client id does not match"
+        response.headers['Content-Type'] = 'application/json'
+        return response
+    stored_access_token = login_session.get('access_token')
     stored_gplus_id = login_session.get('gplus_id')
-    if stored_credentials is not None and gplus_id == stored_gplus_id:
+    if stored_access_token is not None and gplus_id == stored_gplus_id:
         response = make_response(json.dumps('Current user is already connected.'), 200)
         response.headers['Content-Type'] = 'application/json'
 
-    login_session['credentials'] = credentials
+    login_session['access_token'] = access_token
     login_session['gplus_id'] = gplus_id
     userinfo_url = "https://www.googleapis.com/oauth2/v1/userinfo"
     params = {'access_token': credentials.access_token, 'alt': 'json'}

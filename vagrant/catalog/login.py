@@ -32,6 +32,8 @@ def gconnect():
         response = make_response(json.dumps('Invalid state'), 401)
         response.headers['Content-Type'] = 'application/json'
         return response
+        return render_template('notloggedin.html')
+
     code = request.data
     try:
         oauth_flow = flow_from_clientsecrets('client_secrets.json', scope='')
@@ -41,6 +43,8 @@ def gconnect():
         response = make_response(json.dumps('Auth code failed to upgrade.'), 401)
         response.headers['Content-Type'] = 'application/json'
         return response
+        return render_template('notloggedin.html')
+
 
     access_token = credentials.access_token
     url = ('https://www.googleapis.com/oauth2/v1/tokeninfo?access_token=%s' % access_token)
@@ -55,12 +59,15 @@ def gconnect():
         response = make_response(
         json.dumps("Token User ID doesn't match given"), 401)
         response.headers['Content-Type'] = 'application/json'
-        return response
+        return render_template('notloggedin.html')
+        retrun response
     if result['issued_to'] != CLIENT_ID:
         response = make_response(json.dumps("Token Client ID does not match"), 401)
         print "Token Client id does not match"
         response.headers['Content-Type'] = 'application/json'
         return response
+        return render_template('notloggedin.html')
+
     stored_access_token = login_session.get('access_token')
     stored_gplus_id = login_session.get('gplus_id')
     if stored_access_token is not None and gplus_id == stored_gplus_id:

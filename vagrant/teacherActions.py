@@ -15,6 +15,19 @@ Base.metadata.bind = engine
 DBSession = sessionmaker(bind=engine)
 session = DBSession()
 
+@app.route('/teachers', methods=['GET'])
+def showTeachers():
+    teacherList = []
+    allTeachers = session.query(Teacher).all()
+    for teacher in allTeachers:
+        teacher_info = {
+            "teacherName": teacher.teacherName,
+            "id": teacher.id
+        }
+        teacherList.append(teacher_info)
+
+    return flask.jsonify(teacherList), 200
+
 def makeStudent(name, sesh):
     if(name == None):
         return "Must have a name, 404"

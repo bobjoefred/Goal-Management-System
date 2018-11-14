@@ -77,7 +77,7 @@ def gconnect():
     print(data)
     login_session['username'] = data['email']
     login_session['email'] = data['email']
-
+    
     output = ''
     output += '<h1> Welcome'
     output += login_session['username']
@@ -110,7 +110,7 @@ def gdisconnect():
 
 @app.route('/')
 def homepage():
-    return render_template('logintest.html')
+    return render_template('main.html')
     return "not yet logged in"
 
 @app.route('/loggedin')

@@ -26,12 +26,16 @@ class Student(Base):
     id = Column(Integer, primary_key=True, autoincrement = True)
     #goal = Column(String(250))
     goals = relationship('Goal', secondary = 'student_goal_link')
-    def db_init(self, conn_string):
-            self.engine = create_engine(conn_string or self.conn_string)
-            self.metadata.create_all(self.engine)
-            self.connection = self.engine.connect()
+    @property
+    def serialize(self):
+        """Return object data in easily serializeable format"""
+        return {
+            'name': self.name,
+            'id': self.id,
+        }
 
 class Goal(Base):
+
     __tablename__ = 'goal'
     id = Column(Integer, primary_key=True, autoincrement = True)
     description = Column(String(250))
@@ -48,6 +52,9 @@ class StudentGoalLink(Base):
     __tablename__= 'student_goal_link'
     student_id = Column(Integer, ForeignKey('student.id'), primary_key = True)
     goal_id = Column(Integer, ForeignKey('goal.id'), primary_key = True)
+
+
+
 
 dal = Student()
 

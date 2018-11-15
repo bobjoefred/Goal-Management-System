@@ -38,9 +38,9 @@ def showStudents(session):
         studentList.append(student.serialize)
     #    studentList += jsonify(Student=student.serialize)
     #    studentList += thisStudent
-    print("indicator for studentlist")
-    print(studentList)
-    return flask.jsonify(studentList), 200
+
+    #print(studentList)
+    return flask.jsonify(studentList)
 def createGoal(name, description, dueDate, session):
     if(name == None or description == None):
         return "Missing name or description, 404"

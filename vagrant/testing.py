@@ -3,8 +3,9 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from database_setup import Base, Teacher, Student, Goal
 from teacherActions import makeStudent
-from teacherActions import session, app, assignGoal, createGoal
+from teacherActions import session, app, assignGoal, createGoal, showStudents
 from sqlalchemy import DateTime
+from datetime import datetime
 import unittest
 import os
 
@@ -17,7 +18,6 @@ Base.metadata.bind = engine
 DBSession = sessionmaker(bind=engine)
 session1 = DBSession()
 dal = Student()
-#testStudent2 = makeStudent("test name", " ", session1)
 TEST_DB = 'testing.db'
 class TestApp(unittest.TestCase):
     # executed prior to each test
@@ -27,18 +27,12 @@ class TestApp(unittest.TestCase):
         app.config['DEBUG'] = False
         app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///testing.db'
         self.app = app.test_client()
-        # session.drop_all()
-        # session.create_all()
-    # executed after each test
+        self.app_context = app.app_context()
+        self.app_context.push()
     def tearDown(self):
+        self.app_context.pop()
         pass
-    '''
-    def assignGoal(studentName, assignedGoal, session):
-        editedStudent = session.query(Student).filter(Student.name == studentName).first()
-        editedStudent.goal += assignedGoal
-        session.add(editedStudent)
-        session.commit()
-    '''
+
     def getStudent(self, name, session):
         wantedStudent = session.query(Student).filter(Student.name == name).first()
         return wantedStudent
@@ -46,10 +40,6 @@ class TestApp(unittest.TestCase):
     def getGoal(self, name, session):
         wantedGoal = session.query(Goal).filter(Goal.name == name).first()
         return wantedGoal
-#    def test_main_page(self):
-#        response = self.app.get('/', follow_redirects=True)
-#        self.assertEqual(response.status_code, 200)
-
     def test_CreatingStudent(self):
         testStudent = makeStudent("test name", session1)
         grab = self.getStudent("test name", session1)
@@ -58,33 +48,38 @@ class TestApp(unittest.TestCase):
         print("indicator for students")
         print(grab.id)
         print(testStudentID.id)
-    #    print("indicator 2")
-    #    print(testStudent.name)
-    #    print (grab.name)
         self.assertEqual(testStudent.name, grab.name)
+    def test_showingStudents(self):
+        testStudent = makeStudent("yeet", session1)
+        post = showStudents(session1).get_json
+        print(post(1))
     def test_CreatingGoals(self):
-        testGoal = createGoal("test goal", "some description", "2018-11-8", session1)
+        #testDate = DateTime()
+        date_str = '9/11/2018'
+        format_str = '%d/%m/%Y'
+        testDate = datetime.strptime(date_str, format_str)
+        print("DATE INDICATOR")
+        print(testDate.date())
+        testGoal = createGoal("test goal", "some description", testDate, session1)
         grab = self.getGoal("test goal", session1)
-    #    print(testGoal.dueDate)
         print("indicator for goals")
         print(testGoal.name)
+        print("second indicator for date")
+        print(testGoal.date.date())
         self.assertEqual(testGoal.name, grab.name)
         self.assertEqual(testGoal.description, grab.description)
+        self.assertEqual(testGoal.date.date(), grab.date.date() )
     def test_assigningGoals(self):
-        testGoal = createGoal("test goal", "some description", "2018-11-8", session1)
+        testDate = DateTime()
+        testGoal = createGoal("test goal", "some description", testDate, session1)
         testStudent = makeStudent("test name", session1)
         assignGoal(testStudent, testGoal, session1)
         print("indicator for assigning goals")
         print(testStudent.goals[0].name)
+        print(testStudent.goals[0].dueDate)
+        self.assertNotEquals(testStudent.goals[0], None)
 
 
-    '''
-    def test_editGoal(self):
-        testStudent2 = makeStudent("test name1", "l", session1)
-        #grab = self.getStudent("l", session1)
-        assignGoal("test name1", "k", session1)
-        self.assertEqual("k", testStudent2.goal)
-    '''
 
 if __name__ == '__main__':
     unittest.main()

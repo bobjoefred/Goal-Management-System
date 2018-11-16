@@ -2,8 +2,8 @@ import {Injectable} from '@angular/core';
 import {HttpClient, HttpErrorResponse} from '@angular/common/http';
 import {Observable} from 'rxjs/Observable';
 import { catchError } from 'rxjs/operators';
-import {API_URL} from '../env';
-import {Teachers} from './teacher.model';
+import {API_URL} from '../../env';
+import {Teacher} from './teacher.model';
 
 @Injectable()
 export class TeachersApiService {

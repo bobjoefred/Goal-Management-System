@@ -51,7 +51,7 @@ class StudentGoalLink(Base):
 
 dal = Student()
 
-engine = create_engine('sqlite:///testing.db')
+engine = create_engine('sqlite:///teacheractions.db')
 
 
 Base.metadata.create_all(engine)

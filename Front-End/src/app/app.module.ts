@@ -1,7 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { HttpModule } from '@angular/http';
+import { HttpClientModule } from '@angular/common/http';
 import { Routes, RouterModule} from '@angular/router';
 // import {MatToolbarModule} from '@angular/material/toolbar';
 
@@ -12,6 +12,7 @@ import { FooterComponent } from './components/footer/footer.component';
 import { TeachersComponent } from './components/teachers/teachers.component';
 import { StudentsComponent } from './components/students/students.component';
 import { IndividualComponent } from './components/individual/individual.component';
+import { TeachersApiService } from './components/teachers/teachers-api.service';
 
 const appRoutes: Routes = [
   {path: 'home', component: HomeComponent },
@@ -33,11 +34,11 @@ const appRoutes: Routes = [
   imports: [
     BrowserModule,
     FormsModule,
-    HttpModule,
+    HttpClientModule,
     RouterModule.forRoot(appRoutes)
 ],
 
-  providers: [],
+  providers: [TeachersApiService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

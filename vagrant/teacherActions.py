@@ -1,4 +1,6 @@
+import flask
 from flask import Flask, render_template, request, redirect, url_for, jsonify
+from flask_cors import CORS
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from database_setup import Base, Teacher, Student, Goal
@@ -7,6 +9,7 @@ from sqlalchemy import DateTime
 
 
 app = Flask(__name__)
+CORS(app)
 
 engine = create_engine('sqlite:///teacheractions.db')
 

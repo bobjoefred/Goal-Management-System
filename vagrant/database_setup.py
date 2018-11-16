@@ -16,8 +16,10 @@ class Teacher(Base):
     __tablename__ = 'teacher'
 
     id = Column(Integer, primary_key=True, autoincrement = True)
-    teacherName = Column(String(250), nullable=False)
-
+    name = Column(String(250), nullable=False)
+    login = Column(String(250), nullable = False)
+    password = Column(String(250), nullable = False)
+#need to modify from login.py file to call the commands and create teachers and set login info and stuff
 
 class Student(Base):
     __tablename__ = 'student'

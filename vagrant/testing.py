@@ -3,7 +3,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from database_setup import Base, Teacher, Student, Goal
 from teacherActions import makeStudent
-from teacherActions import session, app, assignGoal, createGoal, showStudents
+from teacherActions import session, app, assignGoal, createGoal, showStudents, createTeacher, assignTeacher
 from sqlalchemy import DateTime
 from datetime import datetime
 import unittest
@@ -36,15 +36,22 @@ class TestApp(unittest.TestCase):
     def getStudent(self, name, session):
         wantedStudent = session.query(Student).filter(Student.name == name).first()
         return wantedStudent
-
+    def getTeacher(self, login, session):
+        wantedTeacher = session.query(Teacher).filter(Teacher.login == login).first()
+        return wantedTeacher
     def getGoal(self, name, session):
         wantedGoal = session.query(Goal).filter(Goal.name == name).first()
         return wantedGoal
+    def test_CreatingTeacher(self):
+        testTeacher = createTeacher("test name", "test login name", "test password", session1)
+        grab = self.getTeacher("test login name", session1)
+        self.assertEqual(testTeacher.name, grab.name)
     def test_CreatingStudent(self):
         testStudent = makeStudent("test name", session1)
         grab = self.getStudent("test name", session1)
         testStudentID = makeStudent("second student", session1)
         #test id create
+
         print("indicator for students")
         print(grab.id)
         print(testStudentID.id)
@@ -69,6 +76,18 @@ class TestApp(unittest.TestCase):
         self.assertEqual(testGoal.name, grab.name)
         self.assertEqual(testGoal.description, grab.description)
         self.assertEqual(testGoal.date.date(), grab.date.date() )
+    def test_assigningTeachers(self):
+        testGoal = createGoal("teacher test goal", "some description", "", session1)
+        testTeacher = createTeacher("test name", "test login name", "test password", session1)
+        testTeacher1 = createTeacher("test name", "test login name", "test password", session1)
+        testGoal1 = createGoal("teacher test goal 1", "some description", "", session1)
+        assignTeacher(testTeacher, testGoal, session1)
+        assignTeacher(testTeacher1, testGoal1, session1)
+        print("INDICATOR FOR TEACHER ID")
+        print(testGoal.createdBy)
+
+        self.assertNotEquals(testGoal.createdBy, testGoal1.createdBy)
+        self.assertEqual(testGoal.createdBy, testTeacher.id)
     def test_assigningGoals(self):
         testDate = DateTime()
         testGoal = createGoal("test goal", "some description", testDate, session1)

@@ -29,6 +29,11 @@ def makeStudent(name, sesh):
 #creating a goal and assigning seperate
 #to assign a goal, create a new goal
 #def createGoal():
+def createTeacher(name, login, password ,session):
+    teacher = Teacher(name = name, login = login, password = password)
+    session.add(teacher)
+    session.commit()
+    return teacher
 def showStudents(session):
     students = session.query(Student).all()
     studentList = []
@@ -49,10 +54,15 @@ def createGoal(name, description, dueDate, session):
         #goal.description = description
     goal.date = dueDate
 #    goal.dueDate = dueDate
-
     session.add(goal)
     session.commit()
     return goal
+def assignTeacher(teacher, goal, session):
+    #self suggestion: maybe make it so all of them query session instead of directly being passed in?
+    goal.createdBy = teacher.id
+    session.add(goal)
+    session.commit()
+    
 def assignGoal(student, goal, session):
     student.goals.append(goal)
     session.add(student)

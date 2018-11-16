@@ -60,7 +60,7 @@ def gconnect():
         json.dumps("Token User ID doesn't match given"), 401)
         response.headers['Content-Type'] = 'application/json'
         return render_template('notloggedin.html')
-        retrun response
+        return response
     if result['issued_to'] != CLIENT_ID:
         response = make_response(json.dumps("Token Client ID does not match"), 401)
         print "Token Client id does not match"
@@ -111,9 +111,9 @@ def gdisconnect():
         del login_session['username']
         del login_session['email']
         del login_session['gplus_id']
-    response = make_response(json.dumps('Disconnected successfully'), 200)
-    response.headers['Content-Type'] = 'application/json'
-    return response 
+        response = make_response(json.dumps('Disconnected successfully'), 200)
+        response.headers['Content-Type'] = 'application/json'
+        return response 
 
 @app.route('/')
 def homepage():

@@ -4,6 +4,7 @@ from sqlalchemy.orm import sessionmaker
 #from database_setup import Person, person_name, person_role, person_email
 from flask import session as login_session
 import httplib2
+from database_setup import Student, Teacher
 from oauth2client.client import flow_from_clientsecrets
 from oauth2client.client import FlowExchangeError 
 import json
@@ -11,6 +12,9 @@ import requests
 from flask import make_response
 import random, string
 app = Flask(__name__)
+
+user = "global"
+
 
 CLIENT_ID = json.loads(
     open('client_secrets.json', 'r').read())['web']['client_id']
@@ -84,6 +88,7 @@ def gconnect():
     print(data)
     login_session['username'] = data['email']
     login_session['email'] = data['email']
+    user = login_session['email']
     
     output = ''
     output += '<h1> Welcome'
@@ -123,10 +128,13 @@ def homepage():
 @app.route('/loggedin')
 def loggedin():
     if 'username' in login_session:
-        return render_template('loggedin.html')
+        return render_template('loggedin.html')``
         return "Successfully logged in"
-
-
+    
+def create_Teacher(login_session):
+    newTeacher = Teacher(name = login_session['username'], email = login_session['email'])
+    session.add(newTeacher)
+    session.commit(newTeacher)
 
 if __name__ == '__main__':
     app.secret_key = 'super_secret_key'

@@ -13,6 +13,7 @@ import { TeachersComponent } from './components/teachers/teachers.component';
 import { StudentsComponent } from './components/students/students.component';
 import { IndividualComponent } from './components/individual/individual.component';
 import { TeachersApiService } from './components/teachers/teachers-api.service';
+import { AssignComponent } from './assign/assign.component';
 
 const appRoutes: Routes = [
   {path: 'home', component: HomeComponent },
@@ -30,6 +31,7 @@ const appRoutes: Routes = [
     TeachersComponent,
     StudentsComponent,
     IndividualComponent,
+    AssignComponent,
   ],
   imports: [
     BrowserModule,

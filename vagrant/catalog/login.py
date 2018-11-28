@@ -13,6 +13,7 @@ from flask import make_response
 import random, string
 app = Flask(__name__)
 
+engine = create_engine('sqlite:///login.db')
 DBSession = sessionmaker(bind=engine)
 session = DBSession()
 
@@ -87,10 +88,12 @@ def gconnect():
     login_session['username'] = data['email']
     login_session['email'] = data['email']
 
+    print("Login_session username is " + login_session['username'])
     teacherID = getTeacherID(login_session['username'])
+    return "apples"
     if teacherID is None:
         teacherID = create_Teacher(login_session)
-    login_session['username'] = teacherID
+    login_session['teacherID'] = teacherID
     
     output = ''
     output += '<h1> Welcome'
@@ -200,11 +203,11 @@ def homepage():
     return render_template('main.html')
     return "not yet logged in"
 
-@app.route('/loggedin')
-def loggedin():
-    if 'username' in login_session:
-        return render_template('loggedin.html')
-        return "Successfully logged in"
+# @app.route('/loggedin')
+# def loggedin():
+#     if 'username' in login_session:
+#         return render_template('loggedin.html')   
+#         return "Successfully logged in"
     
 def create_Teacher(login_session):
     newTeacher = Teacher(name = login_session['username'])
@@ -216,26 +219,26 @@ def create_Student(login_session):
     session.commit(newStudent)
 
 @app.route('/userpage')
-def isTeacher(login_session, session, Teacher, Student):
-    if login_session['username'] == getTeacherID():
+def isTeacher():
+    if 'username' in login_session and login_session['username'] == getTeacherID(login_session['username']):
         return "Teacher ID found"
         return render_template('teacherpage.html')
-    elif login_session['username'] == getStudentID():
+    elif 'username' in login_session and login_session['username'] == getStudentID(login_session['username']):
         return "Student ID found"
         return render_template('studentpage.html')  
     else:
         return render_template('notloggedin.html')
 
-def getStudentID(email):
+def getStudentID(name):
     try:
-        student = session.query(Student).filter_by(email=email).one()
+        student = session.query(Student).filter_by(name=username).one()
         return student.id
     except:
         return None
 
-def getTeacherID(email):
+def getTeacherID(name):
     try:
-        teacher = session.query(Teacher).filter_by(email=email).one()
+        teacher = session.query(Teacher).filter_by(name=username).one()
         return teacher.id
     except:
         return None

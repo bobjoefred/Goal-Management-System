@@ -32,7 +32,7 @@ function signInCallback(authResult){
         if (result) {
           $('#result').html('Success!')
           setTimeout(function() {
-            window.location.href = "/loggedin";
+            window.location.href = "/userpage";
           }, 4000);
           } else if (authResult['error']) {
             console.log('Error in login' + authResult['error'])

@@ -13,7 +13,8 @@ from flask import make_response
 import random, string
 app = Flask(__name__)
 
-
+DBSession = sessionmaker(bind=engine)
+session = DBSession()
 
 CLIENT_ID = json.loads(
     open('client_secrets.json', 'r').read())['web']['client_id']
@@ -97,31 +98,6 @@ def gconnect():
     output += '</h1>'
     return output
 
-@app.route('/gdisconnect')
-def gdisconnect():
-    access_token = login_session['access_token']
-    print 'gidsconnect access token is %s', access_token
-    print 'User name:'
-    print login_session['username']
-    if access_token is None:
-        print 'access token is none'
-        response = make_response(json.dumps('User not detected.'), 401)
-        response.headers['Content-Type'] = 'application/json'
-        return response
-    url = 'https://accounts.google.com/o/oauth2/revoke?token=%s' % login_session['access_token']
-    h = httplib2.Http()
-    result = h.request(url, 'GET')[0]
-    print 'result is'
-    print result
-    if result['status'] == '200':
-        del login_session['username']
-        del login_session['email']
-        del login_session['gplus_id']
-        response = make_response(json.dumps('Disconnected successfully'), 200)
-        response.headers['Content-Type'] = 'application/json'
-        return response 
-
-@app.route('/stugconnect', methods=['POST'])
 def stugconnect():
 
     print(login_session)
@@ -192,6 +168,32 @@ def stugconnect():
     output += login_session['username']
     output += '</h1>'
     return output
+@app.route('/gdisconnect')
+def gdisconnect():
+    access_token = login_session['access_token']
+    print 'gidsconnect access token is %s', access_token
+    print 'User name:'
+    print login_session['username']
+    if access_token is None:
+        print 'access token is none'
+        response = make_response(json.dumps('User not detected.'), 401)
+        response.headers['Content-Type'] = 'application/json'
+        return response
+    url = 'https://accounts.google.com/o/oauth2/revoke?token=%s' % login_session['access_token']
+    h = httplib2.Http()
+    result = h.request(url, 'GET')[0]
+    print 'result is'
+    print result
+    if result['status'] == '200':
+        del login_session['username']
+        del login_session['email']
+        del login_session['gplus_id']
+        response = make_response(json.dumps('Disconnected successfully'), 200)
+        response.headers['Content-Type'] = 'application/json'
+        return response 
+
+@app.route('/stugconnect', methods=['POST'])
+
 
 @app.route('/')
 def homepage():
@@ -204,20 +206,22 @@ def loggedin():
         return render_template('loggedin.html')
         return "Successfully logged in"
     
-def create_Teacher(login_session, session):
-    newTeacher = Teacher(name = login_session['username'], email = login_session['email'])
+def create_Teacher(login_session):
+    newTeacher = Teacher(name = login_session['username'])
     session.add(newTeacher)
     session.commit(newTeacher)
-def create_Student(login_session, session):
-    newStudent = Student(name = login_session['username'], email = login_session['email'])
+def create_Student(login_session):
+    newStudent = Student(name = login_session['username'])
     session.add(newStudent)
     session.commit(newStudent)
 
 @app.route('/userpage')
 def isTeacher(login_session, session, Teacher, Student):
-    if login_session['username'] == session.query(Teacher).filter_by(name = login_session['username']).one():
+    if login_session['username'] == getTeacherID():
+        return "Teacher ID found"
         return render_template('teacherpage.html')
-    else if login_session['username'] == session.query(Student).filter_by(name = login_session['username']).one():
+    elif login_session['username'] == getStudentID():
+        return "Student ID found"
         return render_template('studentpage.html')  
     else:
         return render_template('notloggedin.html')

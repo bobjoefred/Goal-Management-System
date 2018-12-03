@@ -6,18 +6,26 @@ from flask import session as login_session
 import httplib2
 from oauth2client.client import flow_from_clientsecrets
 from oauth2client.client import FlowExchangeError
-from database_setup import Base, Teacher, Student, Goal
-from teacherActions import session, app, assignGoal, createGoal, showStudents, createTeacher
 import json
 import requests
 from flask import make_response
 import random, string
+from database_setup import Base, Teacher, Student, Goal
+from teacherActions import makeStudent
+from teacherActions import session, app, assignGoal, createGoal, showStudents, createTeacher, assignTeacher, showGoals
+from sqlalchemy import DateTime
+from datetime import datetime
+import os
 app = Flask(__name__)
+
 engine = create_engine('sqlite:///testing.db')
+
 Base.metadata.bind = engine
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///testing.db'
+
 DBSession = sessionmaker(bind=engine)
-session = DBSession()
+session1 = DBSession()
+CLIENT_ID = json.loads(
+    open('client_secrets.json', 'r').read())['web']['client_id']
 
 @app.route('/login')
 def showLogin():
@@ -29,14 +37,15 @@ def showLogin():
 
 @app.route('/gconnect', methods=['POST'])
 def gconnect():
-    CLIENT_ID = json.loads(
-        open('client_secrets.json', 'r').read())['web']['client_id']
+
     print(login_session)
     print(request)
     if request.args.get('state') != login_session['state']:
         response = make_response(json.dumps('Invalid state'), 401)
         response.headers['Content-Type'] = 'application/json'
         return response
+        return render_template('notloggedin.html')
+
     code = request.data
     try:
         oauth_flow = flow_from_clientsecrets('client_secrets.json', scope='')
@@ -46,6 +55,8 @@ def gconnect():
         response = make_response(json.dumps('Auth code failed to upgrade.'), 401)
         response.headers['Content-Type'] = 'application/json'
         return response
+        return render_template('notloggedin.html')
+
 
     access_token = credentials.access_token
     url = ('https://www.googleapis.com/oauth2/v1/tokeninfo?access_token=%s' % access_token)
@@ -60,14 +71,22 @@ def gconnect():
         response = make_response(
         json.dumps("Token User ID doesn't match given"), 401)
         response.headers['Content-Type'] = 'application/json'
+        return render_template('notloggedin.html')
         return response
-    stored_credentials = login_session.get('credentials')
+    if result['issued_to'] != CLIENT_ID:
+        response = make_response(json.dumps("Token Client ID does not match"), 401)
+        print "Token Client id does not match"
+        response.headers['Content-Type'] = 'application/json'
+        return response
+        return render_template('notloggedin.html')
+
+    stored_access_token = login_session.get('access_token')
     stored_gplus_id = login_session.get('gplus_id')
-    if stored_credentials is not None and gplus_id == stored_gplus_id:
+    if stored_access_token is not None and gplus_id == stored_gplus_id:
         response = make_response(json.dumps('Current user is already connected.'), 200)
         response.headers['Content-Type'] = 'application/json'
 
-    login_session['credentials'] = credentials
+    login_session['access_token'] = access_token
     login_session['gplus_id'] = gplus_id
     userinfo_url = "https://www.googleapis.com/oauth2/v1/userinfo"
     params = {'access_token': credentials.access_token, 'alt': 'json'}
@@ -104,35 +123,77 @@ def gdisconnect():
         del login_session['username']
         del login_session['email']
         del login_session['gplus_id']
-    response = make_response(json.dumps('Disconnected successfully'), 200)
-    response.headers['Content-Type'] = 'application/json'
-    return response
+        response = make_response(json.dumps('Disconnected successfully'), 200)
+        response.headers['Content-Type'] = 'application/json'
+        return response
 
 @app.route('/')
 def homepage():
-    return render_template('logintest.html')
+    return render_template('main.html')
     return "not yet logged in"
-@app.route('/portal')
-def teacherportal():
-    #insert some code to identify the user's login and pass
+@app.route('/loggedin/createstudent',
+            methods = ['GET', 'POST'])
+def createStudent():
     output = ""
-    output += "<a href = '/yourstudents' > Your Students </a></br></br>"
-    output += "<html><body>"
+    output += "yeet"
+    if request.method == 'POST':
+    #    newStudent = makeStudent(name = request.form['name'], session1)
+        makeStudent("dummyStudent", session1)
+        return redirect(url_for('teacherLoggedIn'))
 
-    return output
+    else:
+        return render_template('makeStudents.html')
 
-@app.route('/yourstudents')
-def allstudents():
-    output = ""
-    output +="succ"
-    return output
+@app.route('/loggedin/teacherhomepage',
+           methods=['GET', 'POST'])
+def teacherLoggedIn():
+    post = showStudents(session1).get_json
+    postGoal = showGoals(session1).get_json
+    allStudents = post(0)
+    allGoals = postGoal(0)
+
+    return render_template('teacherLoggedIn.html', allStudents = allStudents, allGoals = allGoals)
+#<textarea class="form-control" maxlength="250" rows="3" name="description">{{item.description}}</textarea>
+#<input type ="text" maxlength="50" class="form-control" name="name"placeholder="Name of the course">
+@app.route('/loggedin/creategoal', methods = ['GET', 'POST'])
+def createGoals():
+    if request.method == 'POST':
+        createGoal(request.form['name'], request.form['goal'], "", session1)
+        assignGoal(request.form['student'], newGoal, session1)
+        return redirect(url_for('teacherLoggedIn'))
+    else:
+        return render_template('newgoal.html')
 @app.route('/loggedin')
 def loggedin():
+    #teachers can makeStudents, showstudents, create goals, and assign those goals to students. (showstudents in session, so we all good. )
+    testGoal = createGoal("teacher test goal", "some description", "", session1)
+#    testTeacher = createTeacher("test namee", "test login name", "test password", session1)
+    testStudent =makeStudent("test name", session1)
+    output = ""
+    output +=  "<a href = 'loggedin/createstudent' > Add Students Here </a></br></br>"
+    output +=  "<a href = 'loggedin/teacherhomepage' > Show Students and Goals Here </a></br></br>"
+    output +=  "<a href = 'loggedin/creategoal' > Add Goals Here </a></br></br>"
+
+    return output
+    #student loggedin template with already made student (show name and goals)
+'''
+def newMenuItem(restaurant_id):
+
+    if request.method == 'POST':
+        newItem = MenuItem(name=request.form['name'], description=request.form[
+                           'description'], price=request.form['price'], course=request.form['course'], restaurant_id=restaurant_id)
+        session.add(newItem)
+        session.commit()
+        return redirect(url_for('restaurantMenu', restaurant_id=restaurant_id))
+    else:
+        return render_template('newmenuitem.html', restaurant_id=restaurant_id)
+'''
+'''
     if 'username' in login_session:
         return render_template('loggedin.html')
         return "Successfully logged in"
-
-
+'''
+#<textarea class="form-control" maxlength="250" rows="3" name="description">{{item.description}}</textarea>
 
 if __name__ == '__main__':
     app.secret_key = 'super_secret_key'

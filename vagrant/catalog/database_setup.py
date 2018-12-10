@@ -17,16 +17,16 @@ class Teacher(Base):
 
     id = Column(Integer, primary_key=True, autoincrement = True)
     name = Column(String(250), nullable=False)
-    login = Column(String(250), nullable = False)
+    # login = Column(String(250), nullable = True)
 #need to modify from login.py file to call the commands and create teachers and set login info and stuff
 
 class Student(Base):
     __tablename__ = 'student'
-
-    name = Column(String(80), nullable=False)
     id = Column(Integer, primary_key=True, autoincrement = True)
-    #goal = Column(String(250))
-    goals = relationship('Goal', secondary = 'student_goal_link')
+    name = Column(String(80), nullable=False)
+    
+    # goal = Column(String(250))
+    # goals = relationship('Goal', secondary = 'student_goal_link', nullable=True)
     @property
     def serialize(self):
         """Return object data in easily serializeable format"""
@@ -47,8 +47,10 @@ class Goal(Base):
 #deal with "createdBy" later, practically useless as of 11/8/18
     createdBy = Column(Integer, ForeignKey('teacher.id'))
     teacher = relationship(Teacher)
-    students = relationship(Student, secondary = 'student_goal_link')
+    # students = relationship(Student, secondary = 'student_goal_link')
     #the createdBy stuff is login related
+
+
 class StudentGoalLink(Base):
     __tablename__= 'student_goal_link'
     student_id = Column(Integer, ForeignKey('student.id'), primary_key = True)
@@ -57,9 +59,9 @@ class StudentGoalLink(Base):
 
 
 
-dal = Student()
 
-engine = create_engine('sqlite:///login.db')
+
+engine = create_engine('sqlite:///test_database.db')
 
 
 Base.metadata.create_all(engine)

@@ -13,7 +13,9 @@ from flask import make_response
 import random, string
 app = Flask(__name__)
 
-engine = create_engine('sqlite:///login.db')
+valuepass = "global"
+
+engine = create_engine('sqlite:///test_database.db')
 DBSession = sessionmaker(bind=engine)
 session = DBSession()
 
@@ -89,7 +91,9 @@ def gconnect():
     print(data)
     login_session['username'] = data['email']
     login_session['email'] = data['email']
-
+    if getTeacherID(login_session['username']) == login_session['username']:
+        valuepass = 1
+        print ("Teacher detected")
     # print("Login_session username is " + login_session['username'])
     # teacherID = getTeacherID(login_session['username'])
     # return "apples"
@@ -101,8 +105,10 @@ def gconnect():
     output += '<h1> Welcome'
     output += login_session['username']
     output += '</h1>'
+    # if login_session['username'] == getTeacherID(login_session['username']):
+    #     return "Teacher ID found"
+    #     return render_template('teacherpage.html')
     return output
-
 def stugconnect():
 
     print(login_session)
@@ -158,7 +164,7 @@ def stugconnect():
     params = {'access_token': credentials.access_token, 'alt': 'json'}
     answer = requests.get(userinfo_url, params=params)
     data = answer.json()
-    print("Data is")
+    print("Data are")
     print(data)
     login_session['username'] = data['email']
     login_session['email'] = data['email']
@@ -167,7 +173,13 @@ def stugconnect():
     # if studentID is None:
     #     studentID = create_Student(login_session)
     # login_session['username'] = studentID
-    
+    # if 'username' in login_session and login_session['username'] == getStudentID(login_session['username']):
+    #     return "Student ID found"
+    #     print ("Student ID found")
+    #     return render_template('studentpage.html')
+    if getStudentID(login_session['username']) == login_session['username']:
+        valuepass = 2
+        return render_template('studentpage.html')
     output = ''
     output += '<h1> Welcome'
     output += login_session['username']
@@ -215,48 +227,68 @@ def homepage():
 def create_Teacher(login_session):
     newTeacher = Teacher(name = login_session['username'])
     session.add(newTeacher)
-    session.commit(newTeacher)
+    session.commit()
 
 def create_Student(login_session):
     newStudent = Student(name = login_session['username'])
-    session.add(newStudent)
-    session.commit(newStudent)
+    session.add(newStudent) 
+    session.commit()
 
 @app.route('/userpage')
-def isTeacher():
-    print("Login ID is " + login_session['username'])
-    print("Get Teaher ID returns    ")
-    print(getTeacherID(login_session['username']))
-    if 'username' in login_session and login_session['username'] == getTeacherID(login_session['username']):
-        return "Teacher ID found"
+def loggedIn():
+    # print("Login ID is " + login_session['username'])
+    # print("Get ID returns    ")
+    # # user = session.query(Teacher).filter_by(name=username).one()
+    # if getTeacherID(login_session['username']) == login_session['username']:
+    #     return render_template('teacherpage.html')
+    #     print ("Teacher detected")
+    # elif getStudentID(login_session['username']) == login_session['username']:
+    #     return render_template('studentpage.html')
+    # else:
+    #     return render_template('notloggedin.html')
+    if valuepass == 1:
         return render_template('teacherpage.html')
-    elif 'username' in login_session and login_session['username'] == getStudentID(login_session['username']):
-        return "Student ID found"
-        return render_template('studentpage.html')  
+        print("valuepass class 1 detected")
+    elif valuepass == 2:
+        return render_template('studentpage.html')
+        print("valuepass class 2 detected")
     else:
         return render_template('notloggedin.html')
+        print("no valuepass detected")
 
- @app.route('/create', methods = ['Get','POST'])
- def createUser():
-     if request.method == 'POST':
-         if request.form['username'] = 
-         
+#    if getTeacherID is not None:
+#         print getTeacherID(login_session['username'])
+#     elif getStudentID is not None:
+#         print getStudentID(login_session['username'])
+        
+#     if 'username' in login_session and login_session['username'] == getTeacherID(login_session['username']):
+#         return "Teacher ID found"
+#         return render_template('teacherpage.html')
+#     elif 'username' in login_session and login_session['username'] == getStudentID(login_session['username']):
+#         return "Student ID found"
+#         return render_template('studentpage.html')
+#     else:
+#         return render_template('notloggedin.html')
 
-def getStudentID(name):
-    try:
-        student = session.query(Student).filter_by(name=username).one()
-        print("Student is " + student)
-        return student.id
-    except:
-        return None
+# @app.route('/create', methods = ['GET','POST'])
+# def createUser():
+#     if request.method == 'POST':
+#         if request.form['username'] = 
+
+def isTeacher(username):
+    user = session.query(Teacher).filter_by(name=username).one()
+    # if user is not None:
+
+def getStudentID(username):
+    student = session.query(Student).filter_by(name=username).one()
+    print("Student is " + student.name)
+    return student.id
 
 def getTeacherID(username):
-    try:
-        teacher = session.query(Teacher).filter_by(name=username).one()
-        print("Teacher is" + teacher)
-        return teacher.name
-    except:
-        return None
+    teacher = session.query(Teacher).filter_by(name=username).one()
+    print("Teacher is" + teacher.name)
+    return teacher.name
+        # return None
 
 
 

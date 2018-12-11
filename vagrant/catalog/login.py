@@ -22,13 +22,21 @@ session = DBSession()
 CLIENT_ID = json.loads(
     open('client_secrets.json', 'r').read())['web']['client_id']
 
-@app.route('/login')
-def showLogin():
+@app.route('/studentlogin')
+def studentShowLogin():
     state = ''.join(random.choice(string.ascii_uppercase + string.digits) for
                     x in xrange(32))
     print(state)
     login_session['state'] = state
-    return render_template('logintest.html', STATE = state)
+    return render_template('studentlogin.html', STATE = state)
+
+@app.route('/teacherlogin')
+def teacherShowLogin():
+    state = ''.join(random.choice(string.ascii_uppercase + string.digits) for
+                    x in xrange(32))
+    print(state)
+    login_session['state'] = state
+    return render_template('teacherlogin.html', STATE = state)
 #  curl -H "Content-Type: application/json" \
 #       -X POST -d '{"login": "dnguyen2020@chadwickschool.org"}' \
 #       'localhost:8080/customer
@@ -109,6 +117,8 @@ def gconnect():
     #     return "Teacher ID found"
     #     return render_template('teacherpage.html')
     return output
+
+@app.route('/stugconnect', methods=['POST'])
 def stugconnect():
 
     print(login_session)
@@ -179,7 +189,8 @@ def stugconnect():
     #     return render_template('studentpage.html')
     if getStudentID(login_session['username']) == login_session['username']:
         valuepass = 2
-        return render_template('studentpage.html')
+        print "Student Detected"
+        # return render_template('studentpage.html')
     output = ''
     output += '<h1> Welcome'
     output += login_session['username']
@@ -208,9 +219,6 @@ def gdisconnect():
         response = make_response(json.dumps('Disconnected successfully'), 200)
         response.headers['Content-Type'] = 'application/json'
         return response
-
-@app.route('/stugconnect', methods=['POST'])
-
 
 @app.route('/')
 def homepage():
@@ -245,16 +253,12 @@ def loggedIn():
     else:
         return render_template('notloggedin.html')
 
-# @app.route('/create', methods = ['GET','POST'])
-# def createUser():
-#     if request.method == 'POST':
-#         if request.form['username'] =
-
 def isTeacher(username):
     user = session.query(Teacher).filter_by(name=username).one()
     # if user is not None:
 
 def getStudentID(username):
+    session = DBSession()
     student = session.query(Student).filter_by(name=username).one_or_none()
     if student is not None:
         print("Student is " + student.name)
@@ -263,6 +267,7 @@ def getStudentID(username):
     return None
 
 def getTeacherID(username):
+    session = DBSession()
     teacher = session.query(Teacher).filter_by(name=username).one_or_none()
     if teacher is not None:
         print("Teacher is" + teacher.name)

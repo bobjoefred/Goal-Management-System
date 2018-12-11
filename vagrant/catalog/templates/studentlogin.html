@@ -1,0 +1,49 @@
+<html>
+  <head>
+    <script src="//apis.google.com/js/client:platform.js?onload=start" async defer></script>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js">
+  </script>
+    <!--script src="https://apis.google.com/js/platform.js" async defer></script-->
+  </head>
+  <body>
+<div id="signinButton">
+  <span class="g-signin" 
+    data-scope="openid email"
+    data-clientid="181450965197-a2gmsc92bta4d60ltpaa8dhvgqdet2hr.apps.googleusercontent.com"
+    data-redirecturi="postmessage"
+    data-accesstype="offline"
+    data-cookiepolicy="single_host_origin"
+    data-callback="signInCallback"
+    data-approvalprompt="force"
+    >
+</span>
+</div>
+<script>
+function signInCallback(authResult){
+  if (authResult['code']) {
+    $('#signinButton').attr('style', 'display: none');
+    $.ajax({
+      type: 'POST',
+      url: '/stugconnect?state={{STATE}}',
+      processData: false,
+      data: authResult['code'],
+      contentType: 'application/octet-stream; charset=utf-8',
+      success: function(result){
+        if (result) {
+          $('#result').html('Success!')
+          setTimeout(function() {
+            window.location.href = "/userpage";
+          }, 4000);
+          } else if (authResult['error']) {
+            console.log('Error in login' + authResult['error'])
+          } else {
+            $('#result').html('Failed to call serverside.');
+          }
+          } 
+        });
+  }
+}
+
+</script>
+  </body>
+</html>

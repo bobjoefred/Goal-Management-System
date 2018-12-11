@@ -9,7 +9,7 @@ Base.metadata.bind = engine
 DBSession = sessionmaker(bind=engine)
 session = DBSession()
 
-student1 = Student(name= "Joe Smith")
+student1 = Student(name= "dolnthrowaway@gmail.com")
 session.add(student1)
 session.commit()
 print("Student 1 added")
@@ -19,7 +19,7 @@ session.add(student2)
 session.commit()
 print("Student 2 added")
 
-teacher1 = Teacher(name = "devoon@devoonboon.com")
+teacher1 = Teacher(name = "dylanfakezsz@gmail.com")
 session.add(teacher1)
 session.commit()
 print("Teacher 1 added")

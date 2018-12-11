@@ -6,7 +6,7 @@ from flask import session as login_session
 import httplib2
 from database_setup import Student, Teacher
 from oauth2client.client import flow_from_clientsecrets
-from oauth2client.client import FlowExchangeError 
+from oauth2client.client import FlowExchangeError
 import json
 import requests
 from flask import make_response
@@ -100,7 +100,7 @@ def gconnect():
     # if teacherID is None:
     #     teacherID = create_Teacher(login_session)
     # login_session['teacherID'] = teacherID
-    
+
     output = ''
     output += '<h1> Welcome'
     output += login_session['username']
@@ -207,7 +207,7 @@ def gdisconnect():
         del login_session['gplus_id']
         response = make_response(json.dumps('Disconnected successfully'), 200)
         response.headers['Content-Type'] = 'application/json'
-        return response 
+        return response
 
 @app.route('/stugconnect', methods=['POST'])
 
@@ -220,10 +220,10 @@ def homepage():
 # @app.route('/loggedin')
 # def loggedin():
 #     if 'username' in login_session:
-#         return render_template('loggedin.html')   
+#         return render_template('loggedin.html')
 #         return "Successfully logged in"
 #   curl 'localhost:8080/teacher'
-    
+
 def create_Teacher(login_session):
     newTeacher = Teacher(name = login_session['username'])
     session.add(newTeacher)
@@ -231,64 +231,43 @@ def create_Teacher(login_session):
 
 def create_Student(login_session):
     newStudent = Student(name = login_session['username'])
-    session.add(newStudent) 
+    session.add(newStudent)
     session.commit()
 
 @app.route('/userpage')
 def loggedIn():
-    # print("Login ID is " + login_session['username'])
-    # print("Get ID returns    ")
-    # # user = session.query(Teacher).filter_by(name=username).one()
-    # if getTeacherID(login_session['username']) == login_session['username']:
-    #     return render_template('teacherpage.html')
-    #     print ("Teacher detected")
-    # elif getStudentID(login_session['username']) == login_session['username']:
-    #     return render_template('studentpage.html')
-    # else:
-    #     return render_template('notloggedin.html')
-    if valuepass == 1:
+    if 'username' in login_session and login_session['username'] == getTeacherID(login_session['username']):
+        # return "Teacher ID found"
         return render_template('teacherpage.html')
-        print("valuepass class 1 detected")
-    elif valuepass == 2:
+    elif 'username' in login_session and login_session['username'] == getStudentID(login_session['username']):
+        # return "Student ID found"
         return render_template('studentpage.html')
-        print("valuepass class 2 detected")
     else:
         return render_template('notloggedin.html')
-        print("no valuepass detected")
-
-#    if getTeacherID is not None:
-#         print getTeacherID(login_session['username'])
-#     elif getStudentID is not None:
-#         print getStudentID(login_session['username'])
-        
-#     if 'username' in login_session and login_session['username'] == getTeacherID(login_session['username']):
-#         return "Teacher ID found"
-#         return render_template('teacherpage.html')
-#     elif 'username' in login_session and login_session['username'] == getStudentID(login_session['username']):
-#         return "Student ID found"
-#         return render_template('studentpage.html')
-#     else:
-#         return render_template('notloggedin.html')
 
 # @app.route('/create', methods = ['GET','POST'])
 # def createUser():
 #     if request.method == 'POST':
-#         if request.form['username'] = 
+#         if request.form['username'] =
 
 def isTeacher(username):
     user = session.query(Teacher).filter_by(name=username).one()
     # if user is not None:
 
 def getStudentID(username):
-    student = session.query(Student).filter_by(name=username).one()
-    print("Student is " + student.name)
-    return student.id
+    student = session.query(Student).filter_by(name=username).one_or_none()
+    if student is not None:
+        print("Student is " + student.name)
+        return student.name
+
+    return None
 
 def getTeacherID(username):
-    teacher = session.query(Teacher).filter_by(name=username).one()
-    print("Teacher is" + teacher.name)
-    return teacher.name
-        # return None
+    teacher = session.query(Teacher).filter_by(name=username).one_or_none()
+    if teacher is not None:
+        print("Teacher is" + teacher.name)
+        return teacher.name
+    return None
 
 
 

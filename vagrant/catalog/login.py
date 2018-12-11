@@ -10,11 +10,12 @@ import json
 import requests
 from flask import make_response
 import random, string
-from database_setup import Base, Teacher, Student, Goal
+from database_setup import Base, Teacher, Student, Goal, StudentGoalLink
 from teacherActions import makeStudent
 from teacherActions import session, app, assignGoal, createGoal, showStudents, createTeacher, assignTeacher, showGoals
 from sqlalchemy import DateTime
 from datetime import datetime
+from flask import url_for
 import os
 app = Flask(__name__)
 
@@ -138,37 +139,66 @@ def createStudent():
     output += "yeet"
     if request.method == 'POST':
     #    newStudent = makeStudent(name = request.form['name'], session1)
-        makeStudent("dummyStudent", session1)
+        makeStudent(request.form['name'], session1)
         return redirect(url_for('teacherLoggedIn'))
 
     else:
         return render_template('makeStudents.html')
-
+def getStudent(name, session):
+    wantedStudent = session.query(Student).filter(Student.name == name).first()
+    return wantedStudent
+def getGoal(name, session):
+    wantedGoal = session.query(Goal).filter(Goal.name == name).first()
+    return wantedGoal
+def getID(student):
+    return student.id
 @app.route('/loggedin/teacherhomepage',
            methods=['GET', 'POST'])
 def teacherLoggedIn():
+#    testGoal = createGoal("teacher test goal", "some description", "", session1)
+#    testStudent =makeStudent("test name", session1)
     post = showStudents(session1).get_json
     postGoal = showGoals(session1).get_json
     allStudents = post(0)
     allGoals = postGoal(0)
+    student = getStudent("dummyStudent", session1)
+    goal = getGoal("teacher test goal", session1)
+    if(student != None):
+        print(student.id)
+        testID = getID(student)
+        if(goal != None):
+            print(goal.id)
+            assignGoal(student, goal, session1)
+            goalLink = completeGoal('1', '1', False, session1)
+            completed = goalLink.isCompleted
+            return render_template('teacherLoggedIn.html', allStudents = allStudents, allGoals = allGoals, completed = completed)
+        elif(goal == None):
+            return render_template('teacherLoggedIn.html', allStudents = allStudents)
+    else:
+        return render_template('empty.html')
+def completeGoal(studentID, goalID, completed, session):
+    wantedGoalLink = session.query(StudentGoalLink).filter_by(student_id = studentID).filter_by(goal_id = goalID).one()
+    wantedGoalLink.isCompleted = completed
+    session.add(wantedGoalLink)
+    session.commit()
+    return wantedGoalLink
 
-    return render_template('teacherLoggedIn.html', allStudents = allStudents, allGoals = allGoals)
 #<textarea class="form-control" maxlength="250" rows="3" name="description">{{item.description}}</textarea>
 #<input type ="text" maxlength="50" class="form-control" name="name"placeholder="Name of the course">
 @app.route('/loggedin/creategoal', methods = ['GET', 'POST'])
 def createGoals():
     if request.method == 'POST':
         createGoal(request.form['name'], request.form['goal'], "", session1)
-        assignGoal(request.form['student'], newGoal, session1)
+    #    assignGoal(request.form['student'], newGoal, session1)
         return redirect(url_for('teacherLoggedIn'))
     else:
         return render_template('newgoal.html')
 @app.route('/loggedin')
 def loggedin():
     #teachers can makeStudents, showstudents, create goals, and assign those goals to students. (showstudents in session, so we all good. )
-    testGoal = createGoal("teacher test goal", "some description", "", session1)
+#    testGoal = createGoal("teacher test goal", "some description", "", session1)
 #    testTeacher = createTeacher("test namee", "test login name", "test password", session1)
-    testStudent =makeStudent("test name", session1)
+#    testStudent =makeStudent("test name", session1)
     output = ""
     output +=  "<a href = 'loggedin/createstudent' > Add Students Here </a></br></br>"
     output +=  "<a href = 'loggedin/teacherhomepage' > Show Students and Goals Here </a></br></br>"

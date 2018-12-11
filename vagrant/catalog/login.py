@@ -185,9 +185,11 @@ def completeGoal(studentID, goalID, completed, session):
 
 #<textarea class="form-control" maxlength="250" rows="3" name="description">{{item.description}}</textarea>
 #<input type ="text" maxlength="50" class="form-control" name="name"placeholder="Name of the course">
-@app.route('/loggedin/creategoal', methods = ['GET', 'POST'])
+@app.route('/loggedin/creategoal',
+            methods = ['GET', 'POST'])
 def createGoals():
     if request.method == 'POST':
+        session1 = DBSession()
         createGoal(request.form['name'], request.form['goal'], "", session1)
     #    assignGoal(request.form['student'], newGoal, session1)
         return redirect(url_for('teacherLoggedIn'))

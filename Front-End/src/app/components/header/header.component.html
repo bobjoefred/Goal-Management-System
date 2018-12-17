@@ -1,8 +1,19 @@
-
+<div *ngIf="isTeacher">
 <ul>
-  <li><a class="active" routerLink="/home">Home</a></li>
-  <li><a routerLink="/teachers">Teachers</a></li>
-  <li><a routerLink="/students">Students</a></li>
+  <li><a class="active" routerLink="/home">Login</a></li>
+  <li><a routerLink="/teachers">Home</a></li>
+  <li><a routerLink="/assign">Assign Goals</a></li>
+  <li><a routerLink="/individual">Individual Students</a></li>
   <span class="example-spacer"></span>
-  <li><a class="active">Login</a></li>
 </ul>
+</div>
+
+<div *ngIf="!isTeacher">
+  <ul>
+    <li><a class="active" routerLink="/home">Login</a></li>
+    <li><a routerLink="/students">Home</a></li>
+    <li><a routerLink="/students">Goal History</a></li>
+    <li><a routerLink="/students">Individual Progress</a></li>
+    <span class="example-spacer"></span>
+  </ul>
+</div>

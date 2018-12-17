@@ -7,9 +7,16 @@ import { Component, OnInit } from '@angular/core';
 })
 export class HeaderComponent implements OnInit {
 
+  isTeacher: boolean = true;
+
   constructor() { }
 
   ngOnInit() {
   }
+
+  // isTeacher() {
+  //   // TODO
+  //   return false;
+  // }
 
 }

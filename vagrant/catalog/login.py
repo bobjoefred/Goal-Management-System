@@ -21,6 +21,7 @@ session = DBSession()
 CLIENT_ID = json.loads(
     open('client_secrets.json', 'r').read())['web']['client_id']
 
+
 @app.route('/studentlogin')
 def studentShowLogin():
     state = ''.join(random.choice(string.ascii_uppercase + string.digits) for
@@ -29,6 +30,7 @@ def studentShowLogin():
     login_session['state'] = state
     return render_template('studentlogin.html', STATE = state)
 
+
 @app.route('/teacherlogin')
 def teacherShowLogin():
     state = ''.join(random.choice(string.ascii_uppercase + string.digits) for
@@ -36,6 +38,8 @@ def teacherShowLogin():
     print(state)
     login_session['state'] = state
     return render_template('teacherlogin.html', STATE = state)
+
+
 @app.route('/gconnect', methods=['POST'])
 def gconnect():
     print(login_session)
@@ -104,9 +108,9 @@ def gconnect():
     output += '</h1>'
     return output
 
+
 @app.route('/stugconnect', methods=['POST'])
 def stugconnect():
-
     print(login_session)
     print(request)
     if request.args.get('state') != login_session['state']:
@@ -174,6 +178,7 @@ def stugconnect():
     output += '</h1>'
     return output
 
+
 @app.route('/gdisconnect')
 def gdisconnect():
     access_token = login_session['access_token']
@@ -198,46 +203,58 @@ def gdisconnect():
         response.headers['Content-Type'] = 'application/json'
         return response
 
+
 @app.route('/')
 def homepage():
     return render_template('main.html')
     return "not yet logged in"
+
 
 def create_Teacher(login_session):
     newTeacher = Teacher(name = login_session['username'])
     session.add(newTeacher)
     session.commit()
 
+
 def create_Student(login_session):
     newStudent = Student(name = login_session['username'])
     session.add(newStudent)
     session.commit()
 
+
 @app.route('/userpage')
 def loggedIn():
-    stoodent = getStudentID(login_session['username'])
+    print ("login session is " + login_session['username'])
+    print (getTeacherID(login_session['username']))
+    # asdf = getStudentID(login_session['username'])
     if 'username' in login_session and login_session['username'] == getTeacherID(login_session['username']):
         # return "Teacher ID found"
         return render_template('teacherpage.html')
     elif 'username' in login_session and login_session['username'] == getStudentID(login_session['username']):
+        print ("Student found in database; student is" + getStudentID(login_session['username']))
         # return "Student ID found"
         return render_template('studentpage.html')
     elif 'username' in login_session and login_session['username'] != getStudentID(login_session['username']):
         print "Student not detected; creating student"
-        stoodent = createStudent(login_session)
-
+        # asdf = createStudent(login_session)
+        createStudent(login_session)
         return render_template('studentpage.html')
     else:
         return render_template('notloggedin.html')
 
+
 def getStudentID(username):
     session = DBSession()
+    print("Getting Student")
+    print(username)
     student = session.query(Student).filter_by(name=username).one_or_none()
+    print("Grabbing Student")
+    print(student)
     if student is not None:
         print("Student is " + student.name)
         return student.name
-
     return None
+
 
 def getTeacherID(username):
     session = DBSession()
@@ -247,12 +264,12 @@ def getTeacherID(username):
         return teacher.name
     return None
 
+
 def createStudent(login_session):
     newStudent = Student(name=login_session['username'])
     print ("Adding new Student")
     session.add(newStudent)
-    session.commit
-
+    session.commit()
 
 
 if __name__ == '__main__':

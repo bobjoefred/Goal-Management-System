@@ -140,7 +140,7 @@ def createStudent():
     if request.method == 'POST':
     #    newStudent = makeStudent(name = request.form['name'], session1)
         makeStudent(request.form['name'], session1)
-        return redirect(url_for('teacherLoggedIn'))
+        return redirect(url_for('loggedin'))
 
     else:
         return render_template('makeStudents.html')
@@ -163,9 +163,15 @@ def teacherLoggedIn():
     allGoals = postGoal(0)
     student = getStudent("dummyStudent", session1)
     goal = getGoal("teacher test goal", session1)
+#    testGoalLink = session.query(StudentGoalLink).filter_by(student_id = student.id).filter_by(goal_id = goal.id).one()
+    #completed = testGoalLink.isCompleted
+    completed = True
+    return render_template('teacherLoggedIn.html', allStudents = allStudents, allGoals = allGoals, completed = completed)
+'''
     if(student != None):
         print(student.id)
         testID = getID(student)
+
         if(goal != None):
             print(goal.id)
             assignGoal(student, goal, session1)
@@ -176,23 +182,50 @@ def teacherLoggedIn():
             return render_template('teacherLoggedIn.html', allStudents = allStudents)
     else:
         return render_template('empty.html')
+'''
+
 def completeGoal(studentID, goalID, completed, session):
     wantedGoalLink = session.query(StudentGoalLink).filter_by(student_id = studentID).filter_by(goal_id = goalID).one()
     wantedGoalLink.isCompleted = completed
     session.add(wantedGoalLink)
     session.commit()
     return wantedGoalLink
+@app.route('/loggedin/completion',
+            methods = ['GET', 'POST'])
+def goalCompletion():
+    if request.method == 'POST': #error is the format request.form returns
+        print("peen")
+        print(request.form['options'])
+        print(request.form['student'])
+        print(request.form['goal'])
+        print(getStudent(request.form['student'], session1))
+        student1 = getStudent(request.form['student'], session1)
+        goal1 = getGoal(request.form['goal'], session1)
+        print(student1.name)
+        assignGoal(student1, goal1, session1)
+        studentID = getID(getStudent(request.form['student'], session1))
+        goalID = getID(getGoal(request.form['goal'], session1))
+        completed = request.form['options']
+        print(request.form['options'])
+    #    if(request.form['options'] == True)
 
+        completeGoal(studentID, goalID, completed, session1)
+        return redirect(url_for('loggedin'))
+
+    else:
+        return render_template('goalCompletion.html')
 #<textarea class="form-control" maxlength="250" rows="3" name="description">{{item.description}}</textarea>
 #<input type ="text" maxlength="50" class="form-control" name="name"placeholder="Name of the course">
 @app.route('/loggedin/creategoal',
             methods = ['GET', 'POST'])
 def createGoals():
     if request.method == 'POST':
-        session1 = DBSession()
+    #    session1 = DBSession()
         createGoal(request.form['name'], request.form['goal'], "", session1)
+        #<label for="student">Student:</label>
+        #<input type ="text" maxlength="50" class="form-control" name="student"placeholder="Name of Assigned Student"> #HTML FOR STUFF HERE
     #    assignGoal(request.form['student'], newGoal, session1)
-        return redirect(url_for('teacherLoggedIn'))
+        return redirect(url_for('loggedin'))
     else:
         return render_template('newgoal.html')
 @app.route('/loggedin')
@@ -205,6 +238,7 @@ def loggedin():
     output +=  "<a href = 'loggedin/createstudent' > Add Students Here </a></br></br>"
     output +=  "<a href = 'loggedin/teacherhomepage' > Show Students and Goals Here </a></br></br>"
     output +=  "<a href = 'loggedin/creategoal' > Add Goals Here </a></br></br>"
+    output +=  "<a href = 'loggedin/completion' > Change Completion Status Here </a></br></br>"
 
     return output
     #student loggedin template with already made student (show name and goals)

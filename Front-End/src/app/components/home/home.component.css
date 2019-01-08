@@ -1,5 +1,9 @@
+body {
+ background-image: "assets/img/books.jpg";
+}
+
 p {
-  text-align: center;
+  padding-left: 30px;
   font-size: 45px;
 }
 
@@ -20,4 +24,17 @@ p {
 	-moz-border-radius: 90%;
 	-webkit-border-radius: 90%;
 	border-radius: 90%;
+}
+
+#books {
+  /* padding-left: 165px; */
+  width: 100%;
+  height: 100%;
+  padding-top: 50px;
+}
+
+.rectangle {
+  height: 510px;
+  width: 600px;
+  background-color: #555;
 }

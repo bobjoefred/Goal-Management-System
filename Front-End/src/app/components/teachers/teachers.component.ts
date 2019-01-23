@@ -11,21 +11,14 @@ import { TeachersApiService } from './teachers-api.service';
 export class TeachersComponent implements OnInit {
 
   teachersListSubs: Subscription;
-  teacherList: Teacher[];
+  teacherList: Array<Teacher>;
 
-  constructor(private teachersApi: TeachersApiService) { }
+  constructor(private readonly teachersApi: TeachersApiService) { }
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.teachersListSubs = this.teachersApi.getTeachers()
       .subscribe(result => {
-        this.teacherList = result
-      },
-      console.error);
+        this.teacherList = result;
+      });
   }
-
-
-  ngOnDestroy() {
-    this.teachersListSubs.unsubscribe();
-  }
-
 }

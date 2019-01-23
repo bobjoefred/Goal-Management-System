@@ -2,36 +2,9 @@
 
 }
 
-.button {
-  background-color: #888;
-  border: none;
-  color: white;
-  padding: 10px;
-  text-align: center;
-  font-size: 16px;
-  cursor: pointer;
-  margin-left: 135px;
-  border-radius: 8px;
-}
-
-.button:hover {
+/* .button:hover {
     background-color: #8886 ;
-}
-
-.button1 {
-  background-color: #888;
-  border: none;
-  color: white;
-  padding: 10px;
-  text-align: center;
-  font-size: 16px;
-  cursor: pointer;
-  border-radius: 8px;
-}
-
-.button1:hover {
-    background-color: #8886 ;
-}
+} */
 
 .button3 {
   background-color: #888;
@@ -45,6 +18,6 @@
   margin-left: 155px;
 }
 
-.button3:hover {
+/* .button3:hover {
     background-color: #8886 ;
-}
+} */

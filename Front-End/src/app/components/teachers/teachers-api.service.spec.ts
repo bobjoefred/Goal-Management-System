@@ -7,6 +7,7 @@ describe('TeachersApiService', () => {
 
   it('should be created', () => {
     const service: TeachersApiService = TestBed.get(TeachersApiService);
-    expect(service).toBeTruthy();
+    expect(service)
+      .toBeTruthy();
   });
 });

@@ -10,6 +10,7 @@ describe('FooterComponent', () => {
     TestBed.configureTestingModule({
       declarations: [ FooterComponent ]
     })
+    .handle(err)
     .compileComponents();
   }));
 
@@ -20,6 +21,7 @@ describe('FooterComponent', () => {
   });
 
   it('should create', () => {
-    expect(component).toBeTruthy();
+    expect(component)
+      .toBeTruthy();
   });
 });

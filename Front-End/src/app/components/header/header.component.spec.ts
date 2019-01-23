@@ -10,6 +10,7 @@ describe('HeaderComponent', () => {
     TestBed.configureTestingModule({
       declarations: [ HeaderComponent ]
     })
+    .handle(err)
     .compileComponents();
   }));
 
@@ -20,6 +21,7 @@ describe('HeaderComponent', () => {
   });
 
   it('should create', () => {
-    expect(component).toBeTruthy();
+    expect(component)
+      .toBeTruthy();
   });
 });

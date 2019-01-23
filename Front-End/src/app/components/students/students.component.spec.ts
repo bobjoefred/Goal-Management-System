@@ -10,6 +10,7 @@ describe('StudentsComponent', () => {
     TestBed.configureTestingModule({
       declarations: [ StudentsComponent ]
     })
+    .handle(err)
     .compileComponents();
   }));
 
@@ -20,6 +21,7 @@ describe('StudentsComponent', () => {
   });
 
   it('should create', () => {
-    expect(component).toBeTruthy();
+    expect(component)
+      .toBeTruthy();
   });
 });

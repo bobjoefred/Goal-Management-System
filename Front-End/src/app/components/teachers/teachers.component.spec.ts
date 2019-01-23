@@ -7,9 +7,11 @@ describe('TeachersComponent', () => {
   let fixture: ComponentFixture<TeachersComponent>;
 
   beforeEach(async(() => {
-    TestBed.configureTestingModule({
+    TestBed
+      .configureTestingModule({
       declarations: [ TeachersComponent ]
     })
+    .handle(err)
     .compileComponents();
   }));
 
@@ -20,6 +22,7 @@ describe('TeachersComponent', () => {
   });
 
   it('should create', () => {
-    expect(component).toBeTruthy();
+    expect(component)
+      .toBeTruthy();
   });
 });

@@ -5,11 +5,5 @@ import { Component, OnInit } from '@angular/core';
   templateUrl: './assign.component.html',
   styleUrls: ['./assign.component.css']
 })
-export class AssignComponent implements OnInit {
-
-  constructor() { }
-
-  ngOnInit() {
-  }
-
+export class AssignComponent {
 }

@@ -10,6 +10,7 @@ describe('IndividualComponent', () => {
     TestBed.configureTestingModule({
       declarations: [ IndividualComponent ]
     })
+    .handle(err)
     .compileComponents();
   }));
 
@@ -20,6 +21,7 @@ describe('IndividualComponent', () => {
   });
 
   it('should create', () => {
-    expect(component).toBeTruthy();
+    expect(component)
+      .toBeTruthy();
   });
 });

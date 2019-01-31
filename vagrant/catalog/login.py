@@ -246,6 +246,21 @@ def createGoals():
         #<input type ="text" maxlength="50" class="form-control" name="student"placeholder="Name of Assigned Student"> #HTML FOR STUFF HERE
     #    assignGoal(request.form['student'], newGoal, session1)
         return redirect(url_for('loggedin'))
+        try:
+            assignGoal(
+                createGoal(
+                    request.form['gname'],
+                    request.form['goal'],
+                    "",
+                    session1),
+                getStudent(
+                    request.form['name'],
+                    session1),
+                session1)
+
+        except AttributeError:
+            return render_template('nostudentexception.html')
+        return redirect(url_for('loggedIn'))
     else:
         return render_template('newgoal.html')
 @app.route('/loggedin')

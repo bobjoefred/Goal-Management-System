@@ -99,6 +99,14 @@ class TestApp(unittest.TestCase):
         self.assertNotEquals(testStudent.goals[0], None)
         self.assertNotEquals(testStudent.goals, None)
 
+    def test_completingGoal(self):
+        testStudent1 = makeStudent("test name", session1)
+        testGoal1 = createGoal("test goal", "some description", "", session1)
+        assignGoal(testStudent1, testGoal1, session1)
+        wantedGoalLink = session1.query(StudentGoalLink).filter_by(student_id = testStudent1.id).filter_by(goal_id = testGoal1.id).one()
+        wantedGoalLink.isCompleted = False
+        completeGoal(testStudent1.id, testGoal1.id,True, session1)
+        self.assertEqual(wantedGoalLink.isCompleted, True)
 
 
 if __name__ == '__main__':

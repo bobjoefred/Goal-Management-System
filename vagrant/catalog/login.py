@@ -262,6 +262,58 @@ def newMenuItem(restaurant_id):
         return "Successfully logged in"
 '''
 #<textarea class="form-control" maxlength="250" rows="3" name="description">{{item.description}}</textarea>
+@app.route('/studenthomepage')
+def studentHomepage():
+    student1 = session1.query(Student).filter_by(
+        email=login_session['username']).one_or_none()
+    post = showStudentGoals(student1, session1).get_json
+    allGoals = post(0)
+    if(allGoals is None):
+        allGoals = "well shit"
+    return render_template('studentloggedin.html', allGoals=allGoals)
+
+
+@app.route('/userpage', methods=['GET', 'POST'])
+def loggedIn():
+    if request.method == 'POST':
+        #:
+        student1 = session1.query(Student).filter_by(
+            email=login_session['username']).one_or_none()
+        student1.name = request.form['name']
+        return redirect(url_for('gdisconnect'))
+    else:
+        print ("login session is " + login_session['username'])
+        print (getTeacherID(login_session['username']))
+        print('INDICATOR')
+        print(getTeacherID(login_session['username']))
+        # asdf = getStudentID(login_session['username'])
+        if 'username' in login_session and login_session['username'] == getTeacherID(
+                login_session['username']):
+            output = ""
+            output += "<a href = 'loggedin/createstudent' > Add Students Here </a></br></br>"
+            output += "<a href = 'loggedin/teacherhomepage' > Show Students and Goals Here </a></br></br>"
+            output += "<a href = 'loggedin/creategoal' > Add Goals Here </a></br></br>"
+
+            output += "<a href = '/gdisconnect' > Back to Login </a></br></br>"
+            return output
+        elif 'username' in login_session and login_session['username'] == getStudentID(login_session['username']):
+            print ("Student found in database; student is"
+                   + getStudentID(login_session['username']))
+            return redirect(url_for('studentHomepage'))
+        elif 'username' in login_session and login_session['username'] != getStudentID(login_session['username']):
+            print "Student not detected; creating student"
+            spawnStudent(login_session, session1)
+            return render_template('studentname.html')
+        else:
+            return render_template('notloggedin.html')
+
+
+def spawnStudent(login_session, session):
+    newStudent = Student(email=login_session['username'])
+    print ("Adding new Student")
+    session.add(newStudent)
+    session.commit()
+    return newStudent
 
 if __name__ == '__main__':
     app.secret_key = 'super_secret_key'

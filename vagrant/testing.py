@@ -97,6 +97,7 @@ class TestApp(unittest.TestCase):
         print(testStudent.goals[0].name)
         print(testStudent.goals[0].dueDate)
         self.assertNotEquals(testStudent.goals[0], None)
+        self.assertNotEquals(testStudent.goals, None)
 
 
 

@@ -24,6 +24,8 @@ engine = create_engine('sqlite:///testing.db')
 Base.metadata.bind = engine
 
 DBSession = sessionmaker(bind=engine)
+engine = create_engine('sqlite:///testing.db?check_same_thread=False')
+DBSession = sessionmaker(bind=engine, autoflush=False)
 session1 = DBSession()
 CLIENT_ID = json.loads(
     open('client_secrets.json', 'r').read())['web']['client_id']

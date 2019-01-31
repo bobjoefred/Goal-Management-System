@@ -214,6 +214,24 @@ def goalCompletion():
         completeGoal(studentID, goalID, completed, session1)
         return redirect(url_for('loggedin'))
 
+@app.route('/studenthomepage/completion',
+           methods=['GET', 'POST'])
+def goalCompletion():
+    if request.method == 'POST':
+        try:
+            student1 = getStudent(request.form['student'], session1)
+            goal1 = getGoal(request.form['goal'], session1)
+            studentID = getID(getStudent(request.form['student'], session1))
+            goalID = getID(getGoal(request.form['goal'], session1))
+            completed = str(request.form['options'])
+            if(completed == 'False'):
+                completed = False
+                if(completed == 'True'):
+                    completed = True
+                completeGoal(studentID, goalID, completed, session1)
+        except AttributeError:
+            return render_template('nostudentexception.html')
+        return redirect(url_for('loggedIn'))
     else:
         return render_template('goalCompletion.html')
 #<textarea class="form-control" maxlength="250" rows="3" name="description">{{item.description}}</textarea>

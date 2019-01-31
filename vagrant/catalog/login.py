@@ -265,12 +265,30 @@ def loggedin():
 '''
 def newMenuItem(restaurant_id):
 
+@app.route('/studenthomepage/status', methods=['GET', 'POST'])
+def checkStatus():
     if request.method == 'POST':
         newItem = MenuItem(name=request.form['name'], description=request.form[
                            'description'], price=request.form['price'], course=request.form['course'], restaurant_id=restaurant_id)
         session.add(newItem)
         session.commit()
         return redirect(url_for('restaurantMenu', restaurant_id=restaurant_id))
+        completed = False
+        student1 = session1.query(Student).filter_by(
+            email=login_session['username']).one_or_none()
+        if(getGoal(request.form['goal'], session1) is not None):
+            goal = getGoal(request.form['goal'], session1)
+            testGoalLink = session1.query(StudentGoalLink).filter_by(
+                student_id=student1.id).filter_by(goal_id=goal.id).one()
+            if(testGoalLink is not None):
+                completed = testGoalLink.isCompleted
+            else:
+                completed = False
+        else:
+            return render_template('nostudentexception.html')
+        return render_template(
+            'completionstatushelper.html',
+            completed=completed)
     else:
         return render_template('newmenuitem.html', restaurant_id=restaurant_id)
 '''
@@ -280,6 +298,7 @@ def newMenuItem(restaurant_id):
         return "Successfully logged in"
 '''
 #<textarea class="form-control" maxlength="250" rows="3" name="description">{{item.description}}</textarea>
+        return render_template('completionstatus.html')
 @app.route('/studenthomepage')
 def studentHomepage():
     student1 = session1.query(Student).filter_by(

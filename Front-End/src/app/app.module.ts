@@ -12,6 +12,8 @@ import { HeaderComponent } from './components/header/header.component';
 import { HomeComponent } from './components/home/home.component';
 import { IndividualComponent } from './components/individual/individual.component';
 import { StudentsComponent } from './components/students/students.component';
+import { StudentIndividualComponent } from './student-individual/student-individual.component';
+import { StudentHistoryComponent } from './student-history/student-history.component';
 import { TeachersApiService } from './components/teachers/teachers-api.service';
 import { TeachersComponent } from './components/teachers/teachers.component';
 
@@ -20,6 +22,8 @@ const appRoutes: Routes = [
   {path: 'home', component: HomeComponent },
   {path: 'individual', component: IndividualComponent},
   {path: 'students', component: StudentsComponent},
+  {path: 'students-individual', component: StudentIndividualComponent},
+  {path: 'students-history', component: StudentHistoryComponent},
   {path: 'teachers', component: TeachersComponent}
 ];
 
@@ -32,6 +36,8 @@ const appRoutes: Routes = [
     HomeComponent,
     IndividualComponent,
     StudentsComponent,
+    StudentIndividualComponent,
+    StudentHistoryComponent,
     TeachersComponent
   ],
   imports: [

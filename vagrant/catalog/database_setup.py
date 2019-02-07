@@ -1,7 +1,7 @@
 import os
 import sys
 from datetime import datetime
-from sqlalchemy import Column, ForeignKey, Integer, String
+from sqlalchemy import Column, ForeignKey, Integer, String, Boolean
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
 from sqlalchemy import create_engine
@@ -17,8 +17,8 @@ class Teacher(Base):
 
     id = Column(Integer, primary_key=True, autoincrement = True)
     name = Column(String(250), nullable=False)
-    login = Column(String(250), nullable = False)
-    password = Column(String(250), nullable = False)
+    login = Column(String(250), nullable = True)
+    password = Column(String(250), nullable = True)
 #need to modify from login.py file to call the commands and create teachers and set login info and stuff
 
 class Student(Base):
@@ -50,17 +50,24 @@ class Goal(Base):
     teacher = relationship(Teacher)
     students = relationship(Student, secondary = 'student_goal_link')
     #the createdBy stuff is login related
+    @property
+    def serialize(self):
+        """Return object data in easily serializeable format"""
+        return {
+            'name': self.name,
+            'id': self.id,
+        }
 class StudentGoalLink(Base):
     __tablename__= 'student_goal_link'
     student_id = Column(Integer, ForeignKey('student.id'), primary_key = True)
     goal_id = Column(Integer, ForeignKey('goal.id'), primary_key = True)
-
+    isCompleted = Column(Boolean)
 
 
 
 dal = Student()
 
-engine = create_engine('sqlite:///teacheractions.db')
+engine = create_engine('sqlite:///testing.db')
 
 
 Base.metadata.create_all(engine)

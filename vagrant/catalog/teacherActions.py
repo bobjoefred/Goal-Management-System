@@ -2,13 +2,27 @@ import flask
 from flask import Flask, render_template, request, redirect, url_for, jsonify
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-from database_setup import Base, Teacher, Student, Goal, StudentGoalLink
+from database_setup import Base, Teacher, Student, Goal, StudentGoalLink, Group
 from sqlalchemy import DateTime
+app = Flask(__name__)
 
+engine = create_engine('sqlite:///teacheractions.db')
 
+Base.metadata.bind = engine
 
+DBSession = sessionmaker(bind=engine)
+session = DBSession()
 
-
+def createGroup(name, description, session):
+    group = Group(name = name, description = description)
+    session.add(group)
+    session.commit()
+    return group
+def assignStudentToGroup(group, student, session):
+    group.students.append(student)
+    session.add(group)
+    session.commit()
+    return group
 def makeStudent(name, sesh):
     if(name == None):
         return "Must have a name, 404"
@@ -18,7 +32,6 @@ def makeStudent(name, sesh):
     sesh.add(student)
     sesh.commit()
     return student
-        '''return "TODO: Implement", 200'''
 #creating a goal and assigning seperate
 #to assign a goal, create a new goal
 #def createGoal():
@@ -27,7 +40,7 @@ def createTeacher(name, login, password ,session):
     session.add(teacher)
     session.commit()
 
-        return teacher
+    return teacher
 def showStudents(session):
     students = session.query(Student).all()
     studentList = []
@@ -84,3 +97,10 @@ def assignGoal(student, goal, session):
     student_goal_link = StudentGoalLink(student_id = student.id, goal_id = goal.id, isCompleted = False)
     session.add(student_goal_link)
     session.commit()
+def completeGoal(studentID, goalID, completed, session):
+    #:
+    wantedGoalLink = session.query(StudentGoalLink).filter_by(student_id = studentID).filter_by(goal_id = goalID).one()
+    wantedGoalLink.isCompleted = completed
+    session.add(wantedGoalLink)
+    session.commit()
+    return wantedGoalLink

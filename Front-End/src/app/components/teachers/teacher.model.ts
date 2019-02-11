@@ -1,4 +1,5 @@
 export interface Teacher {
   id?: number;
-  teacherName?: string;
+  teacherFirstName?: string;
+  teacherLastName?: string;
 }

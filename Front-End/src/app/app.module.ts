@@ -16,15 +16,18 @@ import { StudentIndividualComponent } from './student-individual/student-individ
 import { StudentHistoryComponent } from './student-history/student-history.component';
 import { TeachersApiService } from './components/teachers/teachers-api.service';
 import { TeachersComponent } from './components/teachers/teachers.component';
+import { GoalsComponent } from './components/goals/goals.component';
+import { GoalsApiService } from './components/goals/goals-api.service';
 
 const appRoutes: Routes = [
-  {path: 'assign', component: AssignComponent},
-  {path: 'home', component: HomeComponent },
-  {path: 'individual', component: IndividualComponent},
-  {path: 'students', component: StudentsComponent},
-  {path: 'students-individual', component: StudentIndividualComponent},
-  {path: 'students-history', component: StudentHistoryComponent},
-  {path: 'teachers', component: TeachersComponent}
+  { path: 'assign', component: AssignComponent },
+  { path: 'home', component: HomeComponent },
+  { path: 'individual', component: IndividualComponent },
+  { path: 'students', component: StudentsComponent },
+  { path: 'students-individual', component: StudentIndividualComponent },
+  { path: 'students-history', component: StudentHistoryComponent },
+  { path: 'teachers', component: TeachersComponent },
+  { path: 'teacher/goals', component: GoalsComponent }
 ];
 
 @NgModule({
@@ -38,7 +41,8 @@ const appRoutes: Routes = [
     StudentsComponent,
     StudentIndividualComponent,
     StudentHistoryComponent,
-    TeachersComponent
+    TeachersComponent,
+    GoalsComponent
   ],
   imports: [
     BrowserModule,
@@ -47,7 +51,7 @@ const appRoutes: Routes = [
     RouterModule.forRoot(appRoutes)
 ],
   bootstrap: [AppComponent],
-  providers: [TeachersApiService]
+  providers: [TeachersApiService, GoalsApiService]
 
 })
 export class AppModule { }

@@ -1,13 +1,17 @@
 import flask
-from flask import Flask, render_template, request, redirect, url_for, jsonify
-from sqlalchemy import create_engine
+from flask import Flask, render_template, request, redirect, jsonify, url_for, flash, make_response
+from sqlalchemy import create_engine, asc, desc
 from sqlalchemy.orm import sessionmaker
-from database_setup import Base, Teacher, Student, Goal, StudentGoalLink
+from flask import session as login_session
+import random, string
+import json
+from sqlalchemy.sql import exists
 from sqlalchemy import DateTime
+from flask_cors import CORS
+from database_setup import Base, Teacher, Student, Goal, StudentGoalLink
 
-
-
-
+app = Flask(__name__)
+CORS(app)
 
 def makeStudent(name, sesh):
     if(name == None):
@@ -28,6 +32,8 @@ def createTeacher(name, login, password ,session):
     session.commit()
 
         return teacher
+
+
 def showStudents(session):
     students = session.query(Student).all()
     studentList = []
@@ -40,6 +46,7 @@ def showStudents(session):
 
     #print(studentList)
     return flask.jsonify(studentList)
+
 def showGoals(session):
     goals = session.query(Goal).all()
     goalList = []
@@ -52,6 +59,7 @@ def showGoals(session):
 
     #print(studentList)
     return flask.jsonify(goalList)
+
 def showStudentGoals(student, session):
     goals = student.goals
     goalList = []
@@ -64,17 +72,31 @@ def showStudentGoals(student, session):
 
     #print(studentList)
     return flask.jsonify(goalList)
-def createGoal(name, description, dueDate, session):
-    if(name == None or description == None):
-        return "Missing name or description, 404"
-    else:
-        goal = Goal(name = name, description = description)
-        #goal.description = description
-    goal.date = dueDate
-#    goal.dueDate = dueDate
-    session.add(goal)
+
+''' ================================ '''
+''' ===== TEACHER GOAL METHODS ===== '''
+''' ================================ '''
+
+@app.route('/teacher/goals/new', methods=['POST'])
+def createNewGoal():
+    session = DBSession()
+    post = request.get_json()
+    if request.method == 'POST':
+        newGoal = Goal(goalName = post["goalName"],
+                       description = post["description"],
+                       dueDate = post["dueDate"])
+
+        if(goalName == None or description == None):
+            return "Missing name or description, 404"
+        else:
+            newGoal = Goal(goalName = post["goalName"],
+                           description = post["description"],
+                           dueDate = post["dueDate"])
+    session.add(newGoal)
     session.commit()
-    return goal
+
+    return flask.jsonify("Goal sucessfully created")
+
 def assignTeacher(teacher, goal, session):
     goal.createdBy = teacher.id
     session.add(goal)
@@ -84,3 +106,9 @@ def assignGoal(student, goal, session):
     student_goal_link = StudentGoalLink(student_id = student.id, goal_id = goal.id, isCompleted = False)
     session.add(student_goal_link)
     session.commit()
+
+
+if __name__ == '__main__':
+    app.secret_key = 'super_secret_key'
+    app.debug = True
+    app.run(host='0.0.0.0', port=8000)

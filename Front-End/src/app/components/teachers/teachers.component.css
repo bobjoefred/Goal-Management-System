@@ -32,3 +32,8 @@
 /* .button3: hover {
     background-color: #8886 ;
 } */
+
+.input-element.description{
+height: 100px !important;
+width: 400px;
+}

@@ -4,6 +4,7 @@ import { Observable } from 'rxjs/Observable';
 import { catchError } from 'rxjs/operators';
 import { API_URL } from '../../env';
 import { Teacher } from './teacher.model';
+import { Goal } from '../goals/goal.model';
 
 @Injectable()
 export class TeachersApiService {
@@ -17,4 +18,10 @@ export class TeachersApiService {
     return this.http
     .get<Array<Teacher>>(`${API_URL}/teachers`);
   }
+
+  createNewGoal(goal: Goal): Observable<any> {
+    return this.http
+    .post(`${API_URL}/teacher/goals/new`, goal);
+  }
+
 }

@@ -16,7 +16,8 @@ class Teacher(Base):
     __tablename__ = 'teacher'
 
     id = Column(Integer, primary_key=True, autoincrement = True)
-    name = Column(String(250), nullable=False)
+    teacherFirstName = Column(String(250), nullable=False)
+    teacherLastName = Column(String(250), nullable=False)
     login = Column(String(250), nullable = True)
     password = Column(String(250), nullable = True)
 #need to modify from login.py file to call the commands and create teachers and set login info and stuff
@@ -24,10 +25,12 @@ class Teacher(Base):
 class Student(Base):
     __tablename__ = 'student'
 
-    name = Column(String(80), nullable=False)
+    studentFirstName = Column(String(80), nullable=False)
+    studentLastName = Column(String(80), nullable=False)
     id = Column(Integer, primary_key=True, autoincrement = True)
     #goal = Column(String(250))
     goals = relationship('Goal', secondary = 'student_goal_link')
+
     @property
     def serialize(self):
         """Return object data in easily serializeable format"""
@@ -41,7 +44,7 @@ class Goal(Base):
     __tablename__ = 'goal'
     id = Column(Integer, primary_key=True, autoincrement = True)
     description = Column(String(250))
-    name = Column(String(80), nullable=False)
+    goalName = Column(String(80), nullable=False)
 #    student = relationship(Student)
 #    assignedDate = Column(DateTime, default = func.now())
     dueDate = Column(DateTime(), nullable = True)
@@ -57,6 +60,7 @@ class Goal(Base):
             'name': self.name,
             'id': self.id,
         }
+
 class StudentGoalLink(Base):
     __tablename__= 'student_goal_link'
     student_id = Column(Integer, ForeignKey('student.id'), primary_key = True)

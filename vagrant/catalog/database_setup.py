@@ -11,7 +11,6 @@ from sqlalchemy import DateTime
 
 Base = declarative_base()
 
-
 class Teacher(Base):
     __tablename__ = 'teacher'
 
@@ -24,10 +23,12 @@ class Teacher(Base):
 class Student(Base):
     __tablename__ = 'student'
 
-    name = Column(String(80), nullable=False)
+    name = Column(String(80), nullable=True)
     id = Column(Integer, primary_key=True, autoincrement = True)
+    email = Column(String(80), nullable=True)
     #goal = Column(String(250))
     goals = relationship('Goal', secondary = 'student_goal_link')
+    groups = relationship('Group', secondary='student_group_link')
     @property
     def serialize(self):
         """Return object data in easily serializeable format"""
@@ -64,8 +65,29 @@ class StudentGoalLink(Base):
     isCompleted = Column(Boolean)
 
 
+class Group(Base):
+    __tablename__ = 'group'
+    id = Column(Integer, primary_key=True, autoincrement = True)
+    name = Column(String(250), nullable = False)
+    description = Column(String(250), nullable = False)
+    teacher_id = Column(Integer, ForeignKey('teacher.id'))
+    teacher = relationship(Teacher)
+    students = relationship(Student, secondary='student_group_link')
+    type = Column(String, nullable = True) #can only be advisory or class
+    @property
+    def serialize(self):
+        """Return object data in easily serializeable format"""
+        return {
+            'name': self.name,
+            'id': self.id,
+        }
 
-dal = Student()
+class StudentGroupLink(Base):
+    __tablename__='student_group_link'
+    student_id = Column(Integer, ForeignKey('student.id'), primary_key=True)
+    group_id = Column(Integer, ForeignKey('group.id'), primary_key=True)
+
+
 
 engine = create_engine('sqlite:///testing.db')
 

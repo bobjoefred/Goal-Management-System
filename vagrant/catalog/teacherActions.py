@@ -2,7 +2,7 @@ import flask
 from flask import Flask, render_template, request, redirect, url_for, jsonify
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-from database_setup import Base, Teacher, Student, Goal, StudentGoalLink, Group
+from database_setup import Base, Teacher, Student, Goal, StudentGoalLink, Group, StudentGroupLink
 from sqlalchemy import DateTime
 app = Flask(__name__)
 
@@ -19,10 +19,33 @@ def createGroup(name, description, session):
     session.commit()
     return group
 def assignStudentToGroup(group, student, session):
-    group.students.append(student)
-    session.add(group)
+    student_group_link = StudentGroupLink(student_id = student.id, group_id = group.id)
+    session.add(student_group_link)
     session.commit()
     return group
+def assignTeacherToGroup(group, teacher, session):
+    group.teacher = teacher
+    session.add(group)
+    session.commit()
+def updateGroupName(group, name, session):
+    group.name = name
+    session.add(group)
+    session.commit()
+def deleteGroup(group, session):
+    session.delete(group)
+    session.commit()
+def showGroups(session):
+    groups = session.query(Group).all()
+    groupList = []
+    #look in itemcatalog to see how the project deals with serialized objects
+    for group in groups:
+
+        groupList.append(group.serialize)
+    #    studentList += jsonify(Student=student.serialize)
+    #    studentList += thisStudent
+
+    #print(studentList)
+    return flask.jsonify(groupList)
 def makeStudent(name, sesh):
     if(name == None):
         return "Must have a name, 404"

@@ -16,6 +16,7 @@ import { StudentIndividualComponent } from './student-individual/student-individ
 import { StudentHistoryComponent } from './student-history/student-history.component';
 import { TeachersApiService } from './components/teachers/teachers-api.service';
 import { TeachersComponent } from './components/teachers/teachers.component';
+import { StudentRejectComponent } from './student-reject/student-reject.component';
 
 const appRoutes: Routes = [
   {path: 'assign', component: AssignComponent},
@@ -38,7 +39,8 @@ const appRoutes: Routes = [
     StudentsComponent,
     StudentIndividualComponent,
     StudentHistoryComponent,
-    TeachersComponent
+    TeachersComponent,
+    StudentRejectComponent
   ],
   imports: [
     BrowserModule,

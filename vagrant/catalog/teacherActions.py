@@ -13,6 +13,19 @@ Base.metadata.bind = engine
 DBSession = sessionmaker(bind=engine)
 session = DBSession()
 
+
+def getGroupViaTeacher(teacher_id, session):
+    wantedGroup = session.query(Group).filter_by(teacher_id = teacher_id).first()
+    groupStudentList = []
+    groupStudentList.append(wantedGroup.serialize)
+    return groupStudentList
+def getGroupViaID(group_id, session):
+    wantedGroup = session.query(Group).filter_by(id = group_id).first()
+    return wantedGroup
+def getGroupViaStudent(student_id, session):
+    wantedGroupLink = session.query(StudentGroupLink).filter_by(student_id = student_id).one()
+    return wantedGroupLink.group_id
+
 def createGroup(name, description, session):
     group = Group(name = name, description = description)
     session.add(group)
@@ -64,6 +77,9 @@ def createTeacher(name, login, password ,session):
     session.commit()
 
     return teacher
+def showAllStudentsInGroup(group_id, session):
+    group = session.query
+
 def showStudents(session):
     students = session.query(Student).all()
     studentList = []

@@ -32,17 +32,17 @@ export class GoalsComponent implements OnInit {
     this.goalsListSubs.unsubscribe();
   }
 
-//   delete(TRIP_ID: number) {
-//   this.tripsApi
-//     .deleteTrip(TRIP_ID)
-//     .subscribe(() => {
-//       this.tripsListSubs = this.tripsApi
-//         .getTrips()
-//         .subscribe(res => {
-//             this.tripsList = res;
-//           },
-//           console.error
-//         );
-//     }, console.error);
-// }
+  delete(GOAL_ID: number) {
+  this.goalsApi
+    .deleteGoal(GOAL_ID)
+    .subscribe(() => {
+      this.goalsListSubs = this.goalsApi
+        .getGoals()
+        .subscribe(res => {
+            this.goalsList = res;
+          },
+          console.error
+        );
+    }, console.error);
+}
 }

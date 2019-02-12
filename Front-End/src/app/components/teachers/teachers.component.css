@@ -29,9 +29,9 @@
   margin-left: 155px;
 }
 
-/* .button3: hover {
-    background-color: #8886 ;
-} */
+.button2: hover {
+    background-color: #418e86;
+}
 
 .input-element.description{
 height: 100px !important;

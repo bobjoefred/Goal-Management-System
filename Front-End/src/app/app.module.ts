@@ -18,6 +18,7 @@ import { TeachersApiService } from './components/teachers/teachers-api.service';
 import { TeachersComponent } from './components/teachers/teachers.component';
 import { GoalsComponent } from './components/goals/goals.component';
 import { GoalsApiService } from './components/goals/goals-api.service';
+import { NewGoalFormComponent } from './components/goals/new-goal-form.component';
 
 const appRoutes: Routes = [
   { path: 'assign', component: AssignComponent },
@@ -26,8 +27,10 @@ const appRoutes: Routes = [
   { path: 'students', component: StudentsComponent },
   { path: 'students-individual', component: StudentIndividualComponent },
   { path: 'students-history', component: StudentHistoryComponent },
-  { path: 'teachers', component: TeachersComponent },
-  { path: 'teacher/goals', component: GoalsComponent }
+  { path: 'teacher', component: TeachersComponent },
+  { path: 'teacher/goals', component: GoalsComponent },
+  { path: 'teacher/goals/new', component: NewGoalFormComponent }
+
 ];
 
 @NgModule({
@@ -42,7 +45,8 @@ const appRoutes: Routes = [
     StudentIndividualComponent,
     StudentHistoryComponent,
     TeachersComponent,
-    GoalsComponent
+    GoalsComponent,
+    NewGoalFormComponent
   ],
   imports: [
     BrowserModule,

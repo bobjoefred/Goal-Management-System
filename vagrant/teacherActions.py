@@ -14,6 +14,7 @@ from database_setup import Base, Teacher, Student, Goal, StudentGoalLink
 
 app = Flask(__name__)
 CORS(app)
+
 engine = create_engine('sqlite:///testing.db')
 Base.metadata.bind = engine
 DBSession = sessionmaker(bind=engine)
@@ -104,18 +105,30 @@ def createNewGoal():
     post = request.get_json()
     if request.method == 'POST':
         newGoal = Goal(goalName = post["goalName"],
-                       description = post["description"],
-                       dueDate = post["dueDate"])
-
-        if(goalName == None or description == None):
-            return "Missing name or description, 404"
-        else:
-            newGoal = Goal(goalName = post["goalName"],
-                           description = post["description"],
-                           dueDate = post["dueDate"])
+                       description = post["description"]
+                       # dueDate = post["dueDate"]
+                       )
+        #
+        # if(goalName == None or description == None):
+        #     return "Missing name or description, 404"
+        # else:
+        #     newGoal = Goal(goalName = post["goalName"],
+        #                    description = post["description"]
+        #                    # dueDate = post["dueDate"]
+        #                    )
     session.add(newGoal)
     session.commit()
     return flask.jsonify("Goal sucessfully created"), 200
+
+@app.route('/teacher/goals/<int:goal_id>/delete', methods=['DELETE'])
+def deleteGoal(goal_id):
+    session = DBSession()
+    post = request.get_json()
+    goalToDelete = session.query(Goal).filter_by(id = goal_id).one()
+    session.delete(goalToDelete)
+    session.commit()
+
+    return flask.jsonify("Trip successfully deleted!"), 200
 
 def assignTeacher(teacher, goal, session):
     goal.createdBy = teacher.id
@@ -126,6 +139,7 @@ def assignGoal(student, goal, session):
     student_goal_link = StudentGoalLink(student_id = student.id, goal_id = goal.id, isCompleted = False)
     session.add(student_goal_link)
     session.commit()
+
 
 
 if __name__ == '__main__':

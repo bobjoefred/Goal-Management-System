@@ -3,7 +3,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from database_setup import Base, Teacher, Student, Goal, StudentGoalLink, Group
 from teacherActions import makeStudent
-from teacherActions import session, app, assignGoal, createGoal, showStudents, createTeacher, assignTeacher, completeGoal, createGroup, assignStudentToGroup, assignTeacherToGroup, updateGroupName, deleteGroup, showGroups
+from teacherActions import session, app, assignGoal, createGoal, showStudents, createTeacher, assignTeacher, completeGoal, createGroup, assignStudentToGroup, assignTeacherToGroup, updateGroupName, deleteGroup, showGroups, getGroupViaStudent, getGroupViaTeacher
 from sqlalchemy import DateTime
 from datetime import datetime
 import unittest
@@ -45,11 +45,9 @@ class TestApp(unittest.TestCase):
     def getGroup(self, name, session):
         wantedGroup = session.query(Group).filter(Group.name == name).first()
         return wantedGroup
-    def test_assigningStudentsToGroups(self):
-        testGroup = createGroup("test group", "test description", session1)
-        testStudent = makeStudent("yeet", session1)
-        assignStudentToGroup(testGroup, testStudent, session1)
-        self.assertNotEquals(testGroup.students, None)
+
+
+
     def test_assigningStudentsToGroups(self):
         testGroup = createGroup("test group", "test description", session1)
         testTeacher = createTeacher("yeet", "f", "f", session1)
@@ -63,11 +61,18 @@ class TestApp(unittest.TestCase):
         testGroup = createGroup("test group", "test description", session1)
         testGroup1 = createGroup("test group1", "test description", session1)
         testGroup2 = createGroup("test group2", "test description", session1)
+        testTeacher = createTeacher("test name1", "test login name", "test password", session1)
+        testStudent = makeStudent("test name2", session1)
+        assignStudentToGroup(testStudent, testGroup, session1)
+        assignTeacherToGroup(testTeacher, testGroup, session1)
+        assignStudentToGroup(testStudent, testGroup1, session1)
+        assignTeacherToGroup(testTeacher, testGroup1, session1)
+        assignStudentToGroup(testStudent, testGroup2, session1)
+        assignTeacherToGroup(testTeacher, testGroup2, session1)
         post = showGroups(session1).get_json
+        print("SUPER INDICATORRR")
         print(post(1))
-    #def test_deletingGroups
-    #    testGroup = createGroup("test group", "test description", session1)
-    #    testGroup = createGroup("test group #2", "test description", session1)
+        self.assertEqual(None, None)
     def test_creatingGroups(self):
         testGroup = createGroup("test group", "test description", session1)
         grab = self.getGroup("test group", session1)
@@ -80,8 +85,6 @@ class TestApp(unittest.TestCase):
         testStudent = makeStudent("test name", session1)
         grab = self.getStudent("test name", session1)
         testStudentID = makeStudent("second student", session1)
-        #test id create
-
         print("indicator for students")
         print(grab.id)
         print(testStudentID.id)
@@ -90,6 +93,7 @@ class TestApp(unittest.TestCase):
         testStudent = makeStudent("yeet", session1)
         post = showStudents(session1).get_json
         print(post(1))
+        self.assertEqual(None, None)
     def test_CreatingGoals(self):
         #testDate = DateTime()
         date_str = '9/11/2018'
@@ -115,7 +119,6 @@ class TestApp(unittest.TestCase):
         assignTeacher(testTeacher1, testGoal1, session1)
         print("INDICATOR FOR TEACHER ID")
         print(testGoal.createdBy)
-
         self.assertNotEquals(testGoal.createdBy, testGoal1.createdBy)
         self.assertEqual(testGoal.createdBy, testTeacher.id)
     def test_assigningGoals(self):
@@ -127,7 +130,6 @@ class TestApp(unittest.TestCase):
     #    print(testStudent.goals[0].name)
     #    print(testStudent.goals[0].dueDate)
         self.assertNotEquals(testStudent.goals, None)
-
     def test_completingGoal(self):
         testStudent1 = makeStudent("test name", session1)
         testGoal1 = createGoal("test goal", "some description", "", session1)

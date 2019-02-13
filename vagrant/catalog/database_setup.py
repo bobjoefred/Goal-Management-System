@@ -18,6 +18,13 @@ class Teacher(Base):
     name = Column(String(250), nullable=False)
     login = Column(String(250), nullable = True)
     password = Column(String(250), nullable = True)
+    @property
+    def serialize(self):
+        """Return object data in easily serializeable format"""
+        return {
+            'name': self.name,
+            'id': self.id,
+        }
 #need to modify from login.py file to call the commands and create teachers and set login info and stuff
 
 class Student(Base):
@@ -80,6 +87,9 @@ class Group(Base):
         return {
             'name': self.name,
             'id': self.id,
+            'description': self.description,
+            'teacher' : self.teacher.serialize,
+            'students': [student.serialize for student in self.students]
         }
 
 class StudentGroupLink(Base):

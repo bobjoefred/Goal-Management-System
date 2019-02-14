@@ -26,11 +26,15 @@ def getGroupViaStudent(student_id, session):
     wantedGroupLink = session.query(StudentGroupLink).filter_by(student_id = student_id).one()
     return wantedGroupLink.group_id
 
-def createGroup(name, description, session):
-    group = Group(name = name, description = description)
-    session.add(group)
+@app.route('/loggedin/creategroup', methods=['POST'])
+def createGroup():
+    post = request.get_json()
+    if request.method == 'POST':
+        newGroup = Group(name = post["group_name"],
+                        description = post["group_description"])
+    session.add(newGroup)
     session.commit()
-    return group
+    return flask.jsonify("Group added!"), 200
 def assignStudentToGroup(group, student, session):
     student_group_link = StudentGroupLink(student_id = student.id, group_id = group.id)
     session.add(student_group_link)
@@ -40,13 +44,26 @@ def assignTeacherToGroup(group, teacher, session):
     group.teacher = teacher
     session.add(group)
     session.commit()
-def updateGroupName(group, name, session):
-    group.name = name
-    session.add(group)
+@app.route('/loggedin/editgroup', methods=['PUT'])
+def updateGroup(id):
+    post = request.get_json()
+    if "id" not in post:
+        return "ERROR: Not a valid ID \n", 404
+    group_id = post["id"]
+    editedGroup = session.query(Group).filter_by(id = group_id).one()
+    if "group_name" in post:
+        editedTrip.group_name = post["group_name"]
+    session.add(editedGroup)
     session.commit()
-def deleteGroup(group, session):
-    session.delete(group)
+    return flask.jsonify("Group successfully updated! \n"), 200
+
+@app.route('/loggedin/deletegroup', methods=['DELETE'])
+def deleteGroup(group_id):
+    groupToDelete = session.query(Group).filter_by(id = group_id).one()
+    session.delete(groupToDelete)
     session.commit()
+
+    return flask.jsonify("Trip successfully deleted!"), 200
 def showGroups(session):
     groups = session.query(Group).all()
     groupList = []

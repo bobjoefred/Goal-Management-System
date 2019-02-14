@@ -15,20 +15,35 @@ export class GoalsApiService {
     return Observable.throw(err.message || 'Error: Unable to complete request.');
   }
 
-  deleteGoal(GOAL_ID: number) {
+  deleteGoalTeacher(GOAL_ID: number) {
     return this.http
       .delete(`${API_URL}/teacher/goals/${GOAL_ID}/delete`);
   }
 
-  getGoals():
-  Observable<Array<Goal>> {
-  return this.http
-  .get<Array<Goal>>(`${API_URL}/teacher/goals`);
-}
+  deleteGoalStudent(GOAL_ID: number) {
+    return this.http
+      .delete(`${API_URL}/student/goals/${GOAL_ID}/delete`);
+  }
+  getGoalsTeacher():
+    Observable<Array<Goal>> {
+      return this.http
+      .get<Array<Goal>>(`${API_URL}/teacher/goals`);
+  }
 
-  saveGoal(goal: Goal): Observable<any> {
+  getGoalsStudent():
+  Observable<Array<Goal>> {
+    return this.http
+    .get<Array<Goal>>(`${API_URL}/student/goals`);
+  }
+
+  saveGoalTeacher(goal: Goal): Observable<any> {
   return this.http
     .post(`${API_URL}/teacher/goals/new`, goal);
+  }
+
+  saveGoalStudent(goal: Goal): Observable<any> {
+  return this.http
+    .post(`${API_URL}/student/goals/new`, goal);
   }
 
 }

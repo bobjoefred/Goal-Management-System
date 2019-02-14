@@ -19,12 +19,15 @@ import { TeachersComponent } from './components/teachers/teachers.component';
 import { GoalsComponent } from './components/goals/goals.component';
 import { GoalsApiService } from './components/goals/goals-api.service';
 import { NewGoalFormComponent } from './components/goals/new-goal-form.component';
+import { ResourcesMenuComponent } from './components/resources-menu/resources-menu.component';
 
 const appRoutes: Routes = [
   { path: 'assign', component: AssignComponent },
   { path: 'home', component: HomeComponent },
   { path: 'individual', component: IndividualComponent },
   { path: 'students', component: StudentsComponent },
+  { path: 'student/goals', component: GoalsComponent },
+  { path: 'student/goals/new', component: NewGoalFormComponent },
   { path: 'students-individual', component: StudentIndividualComponent },
   { path: 'students-history', component: StudentHistoryComponent },
   { path: 'teacher', component: TeachersComponent },
@@ -46,7 +49,8 @@ const appRoutes: Routes = [
     StudentHistoryComponent,
     TeachersComponent,
     GoalsComponent,
-    NewGoalFormComponent
+    NewGoalFormComponent,
+    ResourcesMenuComponent
   ],
   imports: [
     BrowserModule,

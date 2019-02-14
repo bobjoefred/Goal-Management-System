@@ -85,7 +85,7 @@ def showStudentGoals(student, session):
 ''' ================================ '''
 
 @app.route('/teacher/goals', methods=['GET'])
-def showGoals():
+def showGoalsTeacher():
     session = DBSession()
     goalList = []
     allGoals = session.query(Goal).all()
@@ -100,7 +100,7 @@ def showGoals():
     return flask.jsonify(goalList), 200
 
 @app.route('/teacher/goals/new', methods=['POST'])
-def createNewGoal():
+def createNewGoalTeacher():
     session = DBSession()
     post = request.get_json()
     if request.method == 'POST':
@@ -121,7 +121,7 @@ def createNewGoal():
     return flask.jsonify("Goal sucessfully created"), 200
 
 @app.route('/teacher/goals/<int:goal_id>/delete', methods=['DELETE'])
-def deleteGoal(goal_id):
+def deleteGoalTeacher(goal_id):
     session = DBSession()
     post = request.get_json()
     goalToDelete = session.query(Goal).filter_by(id = goal_id).one()
@@ -139,6 +139,57 @@ def assignGoal(student, goal, session):
     student_goal_link = StudentGoalLink(student_id = student.id, goal_id = goal.id, isCompleted = False)
     session.add(student_goal_link)
     session.commit()
+
+''' ================================ '''
+''' ===== STUDENT GOAL METHODS ===== '''
+''' ================================ '''
+
+@app.route('/student/goals/new', methods=['POST'])
+def createNewGoalStudent():
+    session = DBSession()
+    post = request.get_json()
+    if request.method == 'POST':
+        newGoal = Goal(goalName = post["goalName"],
+                       description = post["description"]
+                       # dueDate = post["dueDate"]
+                       )
+        #
+        # if(goalName == None or description == None):
+        #     return "Missing name or description, 404"
+        # else:
+        #     newGoal = Goal(goalName = post["goalName"],
+        #                    description = post["description"]
+        #                    # dueDate = post["dueDate"]
+        #                    )
+    session.add(newGoal)
+    session.commit()
+    return flask.jsonify("Goal sucessfully created"), 200
+
+@app.route('/student/goals', methods=['GET'])
+def showGoalsStudent():
+    session = DBSession()
+    goalList = []
+    allGoals = session.query(Goal).all()
+    # trip_id = request.args.get('trip_id')
+    # trip_name = request.args.get('trip_name')
+    for goal in allGoals:
+        goal_info = {"goalName" : goal.goalName,
+                    "id" : goal.id,
+                    "description" : goal.description
+                    }
+        goalList.append(goal_info)
+    return flask.jsonify(goalList), 200
+
+@app.route('/student/goals/<int:goal_id>/delete', methods=['DELETE'])
+def deleteGoalStudent(goal_id):
+    session = DBSession()
+    post = request.get_json()
+    goalToDelete = session.query(Goal).filter_by(id = goal_id).one()
+    session.delete(goalToDelete)
+    session.commit()
+
+    return flask.jsonify("Trip successfully deleted!"), 200
+
 
 
 

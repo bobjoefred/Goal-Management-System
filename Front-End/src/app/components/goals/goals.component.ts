@@ -16,11 +16,20 @@ export class GoalsComponent implements OnInit {
   goals: Array<Goal>;
 
   constructor(private goalsApi: GoalsApiService) {
+
   }
 
   ngOnInit() {
+    // this.goalsListSubs = this.goalsApi
+    //   .getGoalsTeacher()
+    //   .subscribe(res => {
+    //       this.goalsList = res;
+    //     },
+    //     console.error
+    //   );
+
     this.goalsListSubs = this.goalsApi
-      .getGoals()
+      .getGoalsStudent()
       .subscribe(res => {
           this.goalsList = res;
         },
@@ -32,12 +41,12 @@ export class GoalsComponent implements OnInit {
     this.goalsListSubs.unsubscribe();
   }
 
-  delete(GOAL_ID: number) {
+deleteGoalTeacher(GOAL_ID: number) {
   this.goalsApi
-    .deleteGoal(GOAL_ID)
+    .deleteGoalTeacher(GOAL_ID)
     .subscribe(() => {
       this.goalsListSubs = this.goalsApi
-        .getGoals()
+        .getGoalsTeacher()
         .subscribe(res => {
             this.goalsList = res;
           },
@@ -45,4 +54,19 @@ export class GoalsComponent implements OnInit {
         );
     }, console.error);
 }
+
+deleteGoalStudent(GOAL_ID: number) {
+this.goalsApi
+  .deleteGoalStudent(GOAL_ID)
+  .subscribe(() => {
+    this.goalsListSubs = this.goalsApi
+      .getGoalsStudent()
+      .subscribe(res => {
+          this.goalsList = res;
+        },
+        console.error
+      );
+  }, console.error);
+}
+
 }

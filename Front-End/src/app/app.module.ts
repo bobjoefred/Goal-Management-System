@@ -11,12 +11,12 @@ import { FooterComponent } from './components/footer/footer.component';
 import { HeaderComponent } from './components/header/header.component';
 import { HomeComponent } from './components/home/home.component';
 import { IndividualComponent } from './components/individual/individual.component';
-import { StudentsComponent } from './components/students/students.component';
-import { StudentIndividualComponent } from './components/student-individual/student-individual.component';
 import { StudentHistoryComponent } from './components/student-history/student-history.component';
+import { StudentIndividualComponent } from './components/student-individual/student-individual.component';
+import { StudentRejectComponent } from './components/student-reject/student-reject.component';
+import { StudentsComponent } from './components/students/students.component';
 import { TeachersApiService } from './components/teachers/teachers-api.service';
 import { TeachersComponent } from './components/teachers/teachers.component';
-import { StudentRejectComponent } from './components/student-reject/student-reject.component';
 
 const appRoutes: Routes = [
   {path: 'assign', component: AssignComponent},
@@ -27,7 +27,6 @@ const appRoutes: Routes = [
   {path: 'students-history', component: StudentHistoryComponent},
   {path: 'student-reject', component: StudentRejectComponent},
   {path: 'teachers', component: TeachersComponent}
-
 ];
 
 @NgModule({

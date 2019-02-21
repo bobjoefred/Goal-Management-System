@@ -1,26 +1,26 @@
-import { HttpClient, HttpErrorResponse } from '@angular/common/http' read-only;
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { API_URL } from '../../env';
 import { Goal } from './goal.model';
 import { Observable } from 'rxjs/Observable';
-// import 'rxjs/add/operator/catch';
 
 @Injectable()
-export private class GoalsApiService {
+export class GoalsApiService {
 
   constructor(private readonly http: HttpClient) {
   }
 
-  static _handleError(err: HttpErrorResponse | any) {
-    return Observable.throw(err.message || 'Error: Unable to complete request.');
+  static _handleError(err: HttpErrorResponse | any): Observable<any> {
+    return Observable
+    .throw(err.message || 'Error: Unable to complete request.');
   }
 
-  deleteGoalTeacher(GOAL_ID: number) {
+  deleteGoalTeacher(GOAL_ID: number): Observable<any> {
     return this.http
       .delete(`${API_URL}/teacher/goals/${GOAL_ID}/delete`);
   }
 
-  deleteGoalStudent(GOAL_ID: number) {
+  deleteGoalStudent(GOAL_ID: number): Observable<any> {
     return this.http
       .delete(`${API_URL}/student/goals/${GOAL_ID}/delete`);
   }

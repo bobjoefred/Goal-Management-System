@@ -7,19 +7,23 @@ describe('GoalsComponent', () => {
   let fixture: ComponentFixture<GoalsComponent>;
 
   beforeEach(async(() => {
-    TestBed.configureTestingModule({
+    TestBed
+    .configureTestingModule({
       declarations: [ GoalsComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(GoalsComponent);
+    fixture = TestBed
+    .createComponent(GoalsComponent);
     component = fixture.componentInstance;
-    fixture.detectChanges();
+    fixture
+    .detectChanges();
   });
 
   it('should create', () => {
-    expect(component).toBeTruthy();
+    expect(component)
+    .toBeTruthy();
   });
 });

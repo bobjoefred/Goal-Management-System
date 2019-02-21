@@ -8,18 +8,18 @@ import { RouterModule, Routes } from '@angular/router';
 import { AppComponent } from './app.component';
 import { AssignComponent } from './components/assign/assign.component';
 import { FooterComponent } from './components/footer/footer.component';
+import { GoalsApiService } from './components/goals/goals-api.service';
+import { GoalsComponent } from './components/goals/goals.component';
+import { NewGoalFormComponent } from './components/goals/new-goal-form.component';
 import { HeaderComponent } from './components/header/header.component';
 import { HomeComponent } from './components/home/home.component';
 import { IndividualComponent } from './components/individual/individual.component';
+import { ResourcesMenuComponent } from './components/resources-menu/resources-menu.component';
+import { StudentHistoryComponent } from './components/student-history/student-history.component';
+import { StudentIndividualComponent } from './components/student-individual/student-individual.component';
 import { StudentsComponent } from './components/students/students.component';
-import { StudentIndividualComponent } from './student-individual/student-individual.component';
-import { StudentHistoryComponent } from './student-history/student-history.component';
 import { TeachersApiService } from './components/teachers/teachers-api.service';
 import { TeachersComponent } from './components/teachers/teachers.component';
-import { GoalsComponent } from './components/goals/goals.component';
-import { GoalsApiService } from './components/goals/goals-api.service';
-import { NewGoalFormComponent } from './components/goals/new-goal-form.component';
-import { ResourcesMenuComponent } from './components/resources-menu/resources-menu.component';
 
 const appRoutes: Routes = [
   { path: 'assign', component: AssignComponent },

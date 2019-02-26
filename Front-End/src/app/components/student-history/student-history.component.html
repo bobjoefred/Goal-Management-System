@@ -15,18 +15,33 @@
 
 <body class="w3-light-white">
 
+  <div class="col text-right">
+    <div ngbDropdown placement="top-right" class="d-inline-block">
+      <button class="btn btn-outline-primary" id="dropdownBasic2" ngbDropdownToggle>Toggle dropup</button>
+      <div ngbDropdownMenu aria-labelledby="dropdownBasic2">
+        <button class="dropdown-item">Action - 1</button>
+        <button class="dropdown-item">Another Action</button>
+        <button class="dropdown-item">Something else is here</button>
+      </div>
+    </div>
+  </div>
+
   <!-- Page Container -->
   <div class="w3-content w3-margin-top" style="max-width:1400px;">
     <br>
 
     <!-- The Grid -->
-    <div class="w3-row-padding">
-      <h1> Your Goal History!
-        <select class="dropdown">
-          <option value="volvo">CompSci </option>
-          <option value="saab">APEX </option>
-      </select>
-    </h1>
+  <div class="w3-row-padding">
+    <h1> Your Goal History!</h1>
+      <div ngbDropdown class="d-inline-block">
+        <button class="btn btn-outline-primary" id="dropdownBasic1" ngbDropdownToggle>Toggle dropdown</button>
+          <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+            <button class="dropdown-item">Action - 1</button>
+            <button class="dropdown-item">Another Action</button>
+            <button class="dropdown-item">Something else is here</button>
+          </div>
+        </div>
+
 
       <div class="row">
         <div class="column">

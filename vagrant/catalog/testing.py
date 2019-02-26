@@ -3,7 +3,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from database_setup import Base, Teacher, Student, Goal, StudentGoalLink, Group
 from teacherActions import makeStudent
-from teacherActions import session, app, assignGoal, createGoal, showStudents, createTeacher, assignTeacher, completeGoal, createGroup, assignStudentToGroup, assignTeacherToGroup, updateGroupName, deleteGroup, showGroups, getGroupViaStudent, getGroupViaTeacher
+from teacherActions import session, app, assignGoal, createGoal, showStudents, createTeacher, assignTeacher, completeGoal, createGroup, assignStudentToGroup, assignTeacherToGroup, updateGroupName, deleteGroup, showGroups, getGroupByStudent, getGroupByTeacher, getGroupViaID
 from sqlalchemy import DateTime
 from datetime import datetime
 import unittest
@@ -47,12 +47,27 @@ class TestApp(unittest.TestCase):
         return wantedGroup
 
 
+    def test_deletingGroups(self):
+        testGroup = createGroup("test group222", "test description", session1)
+        deleteGroup(testGroup.id)
+        self.assertEqual(getGroup("test group222", session1), None)
+    def test_getGroupByStudents(self):
+        testGroup = creategroup("test group", "test description", session1)
+        testStudent = makeStudent("test student", session1)
+        assignStudentToGroup(testStudent.id, testGroup.id, session1)
+        self.assertEqual(testGroup, getGroupByStudent(testStudent, session1))
+    def test_getGroupByTeacher(self):
+        testGroup = creategroup("test group", "test description", session1)
+        testTeacher = createTeacher("yeet", "f", "f", session1)
+        assignTeacherToGroup(testStudent.id, testGroup.id, session1)
+        self.assertEqual(testGroup, getGroupByTeacher(testTeacher, session1))
 
-    def test_assigningStudentsToGroups(self):
+    def test_assigningTeachersToGroups(self):
         testGroup = createGroup("test group", "test description", session1)
         testTeacher = createTeacher("yeet", "f", "f", session1)
         assignTeacherToGroup(testGroup, testTeacher, session1)
         self.assertNotEquals(testGroup.teacher, None)
+    #TODO: assign students to group
     def test_changingGroupName(self):
         testGroup = createGroup("test group", "test description", session1)
         updateGroupName(testGroup, "yeet", session1)

@@ -2,7 +2,8 @@ import flask
 from flask import Flask, render_template, request, redirect, url_for, jsonify
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-from database_setup import Base, Teacher, Student, Goal, StudentGoalLink, Group, StudentGroupLink
+from database_setup import Base, Teacher, Student
+from database_setup import Goal, StudentGoalLink, Group, StudentGroupLink
 from sqlalchemy import DateTime
 app = Flask(__name__)
 
@@ -12,12 +13,17 @@ Base.metadata.bind = engine
 
 DBSession = sessionmaker(bind=engine)
 session = DBSession()
+# TODO weeks 3/4~3/11
+# - Linted of everything we have now
+# - 1 or two test cases per function
+
+
 @app.route('/loggedin/<int:group_id>/showallstudentsingroup', methods=['GET'])
-def showAllStudentsInGroupjson(group_id):
+def showAllStudentsInGroupjson(group_id, session):
     wanted_group = session.query(Group).filter_by(id=group_id).one_or_none()
     student_list = []
-    for student in wanted_group.students
-    student_list.append(student.serialize)
+    for student in wanted_group.students:
+        student_list.append(student.serialize)
     return flask.jsonify(student_list)
 
 
@@ -27,12 +33,12 @@ def showAllStudentsInGroup(group_id, session):
 
 
 @app.route('/loggedin/<int:student_id>/showallstudentgoals', methods=['GET'])
-def showAllStudentGoals(student_id):
+def showAllStudentGoals(student_id, session):
     wanted_student = session.query(Student).filter_by(
         id=student_id).one_or_none()
     goal_list = []
-    for goal in wanted_student.goals
-    goal_list.append(goal.serialize)
+    for goal in wanted_student.goals:
+        goal_list.append(goal.serialize)
     return flask.jsonify(goal_list)
 
 
@@ -68,15 +74,19 @@ def getGroupByStudentjson(student_id):
     wantedStudent = session.query(Student).filter_by(
         id=student_id).one_or_none()
     group_student_list = []
-    for group in wantedStudent.groups
-    group_student_list.append(group.serialize)
+    for group in wantedStudent.groups:
+        group_student_list.append(group.serialize)
     return group_student_list
 
 
 def getGroupByStudent(student_id, session):
     wantedStudent = session.query(Student).filter_by(
         id=student_id).one_or_none()
-    return wantedStudent.groups
+    student_group_list = []
+    for group in wanted_student.groups:
+        student_group_list.append(group)
+    for group in student_group_list:
+        return group
 
 
 @app.route('/loggedin/creategroup', methods=['POST'])
@@ -98,16 +108,16 @@ def assignStudentToGroupjson(student_id, group_id):
         student_id=student_id, group_id=group_id)
     session.add(student_group_link)
     session.commit()
-    return group
+
     return flask.jsonify("Student assigned!"), 200
 
 
 def assignStudentToGroup(student_id, group_id, session):
     student_group_link = StudentGroupLink(
         student_id=student_id, group_id=group_id)
+    modified_group = session.query(Group).filter_by(id=group_id)
     session.add(student_group_link)
     session.commit()
-    return group
 
 
 @app.route(
@@ -155,8 +165,12 @@ def deleteGroup(group_id, session):
     session.commit()
 
 
+def showGroups(session):
+    groups = session.query(Group).all()
+
+
 @app.route('/loggedin/showgroups', methods=['GET'])
-def showGroups():
+def showGroupsjson():
     groups = session.query(Group).all()
     groupList = []
     # look in itemcatalog to see how the project deals with serialized objects
@@ -215,6 +229,8 @@ def makeStudent(name, sesh):
 # creating a goal and assigning seperate
 # to assign a goal, create a new goal
 # def createGoal():
+
+
 @app.route('/loggedin/createteacher', methods=['POST'])
 def createTeacherjson():
     post = request.get_json()
@@ -304,12 +320,14 @@ def showStudentGoals(student, session):
     # print(studentList)
     return flask.jsonify(goalList)
 
+
 @app.route('/loggedin/creategoal',
            methods=['GET', 'POST'])
 def createGoaljson():
     if request.method == 'POST':
         try:
-            # date needs to be in the format 'xx/xx/xxxx', but if the month is single digit just 'x/xx/xxxx'
+            # date needs to be in the format 'xx/xx/xxxx',
+            # but if the month is single digit just 'x/xx/xxxx'
             #    ex) date_str = '9/11/2018'
             date_str = goal_duedate
             format_str = '%d/%m/%Y'
@@ -337,9 +355,7 @@ def createGoal(name, description, dueDate, session):
         return "Missing name or description, 404"
     else:
         goal = Goal(name=name, description=description)
-        #goal.description = description
     goal.date = dueDate
-#    goal.dueDate = dueDate
     session.add(goal)
     session.commit()
     return goal
@@ -384,10 +400,10 @@ def assignGoal(student, goal, session):
     session.commit()
 
 
-def completeGoal(student_id, goal_id, session):
+def completeGoal(student_id, goal_id, completed, session):
     # must have
     wantedGoalLink = session.query(StudentGoalLink).filter_by(
-        student_id=studentID).filter_by(goal_id=goalID).one()
+        student_id=student_id).filter_by(goal_id=goal_id).one()
     wantedGoalLink.isCompleted = completed
     session.add(wantedGoalLink)
     session.commit()
@@ -397,7 +413,7 @@ def completeGoal(student_id, goal_id, session):
 @app.route(
     '/loggedin/<int:student_id>/<int:goal_id>/assigngoal',
     methods=['POST'])
-def completeGoal(student_id, goal_id, session):
+def completeGoaljson(student_id, goal_id, session):
     # must have a "completed" boolean field that is passed in as a "POST"
     # (must be called completed as of now)
 

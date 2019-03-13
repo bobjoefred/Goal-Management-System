@@ -1,3 +1,9 @@
+<style>
+  html, body, h1, h2, h3, h4, h5, h6 {
+    font-family: "Roboto", sans-serif
+  }
+</style>
+
 <div *ngIf="isTeacher">
 <ul>
   <li><a class="active" routerLink="/home">Login</a></li>
@@ -9,11 +15,18 @@
 </div>
 
 <div *ngIf="!isTeacher">
-  <ul>
-    <li><a class="active" routerLink="/home">Login</a></li>
-    <li><a routerLink="/students">Home</a></li>
-    <li><a routerLink="/students-history">Goal History</a></li>
-    <li><a routerLink="/students-individual">Individual Progress</a></li>
-    <span class="example-spacer"></span>
-  </ul>
+  <div class="navbar">
+    <a class="active" routerLink="/home">Login</a>
+    <a routerLink="/students">Home</a>
+    <a routerLink="/students-individual">Individual Progress</a>
+  <div class="dropdown">
+    <button class="dropbtn" routerLink="/students-history">Goal History
+      <i class="fa fa-caret-down"></i>
+    </button>
+      <div class="dropdown-content">
+        <a href="#">Computer Science</a>
+        <a href="#">AP Enviromental Science</a>
+      </div>
+    </div>
+  </div>
 </div>

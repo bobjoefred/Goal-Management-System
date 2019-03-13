@@ -1,39 +1,9 @@
-body, html {
+/* body, html {
   height: 100%;
   margin: 0;
   background-image: url("/assets/img/books.jpg");
-}
-
-/* .bg {
-  height: 100%;
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: cover;
-} */
-/* 
-p {
-  padding-left: 30px;
-  font-size: 45px;
 } */
 
-/* .panel-heading {
-  padding: 5px 15px;
-}
-
-.panel-footer {
-  padding: 1px 15px;
-  color: #A0A0A0;
-} */
-
-/* .profile-img {
-  width: 96px;
-  height: 96px;
-  margin: 0 auto 10px;
-  display: block;
-  -moz-border-radius: 90%;
-  -webkit-border-radius: 90%;
-  border-radius: 90%;
-} */
 
 /* #books {
   width: 100%;
@@ -41,8 +11,21 @@ p {
   padding-top: 50px;
 } */
 
-.rectangle {
-  height: 510px;
-  width: 600px;
-  background-color: #555;
+#googlesign {
+  width: 50%;
+  height: 50%;
+}
+
+.column {
+  width: 55%;
+  height: 85%;
+  padding-top: 45px;
+  padding-left: 320px;
+
+}
+
+.card {
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+  text-align: center;
+  background-color: #f1f1f1;
 }

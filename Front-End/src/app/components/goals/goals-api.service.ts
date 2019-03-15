@@ -24,6 +24,7 @@ export class GoalsApiService {
     return this.http
       .delete(`${API_URL}/student/goals/${GOAL_ID}/delete`);
   }
+
   getGoalsTeacher():
     Observable<Array<Goal>> {
     return this.http
@@ -36,12 +37,12 @@ export class GoalsApiService {
       .get<Array<Goal>>(`${API_URL}/student/goals`);
   }
 
-  saveGoalTeacher(goal: Goal): Observable<any> {
+  saveGoalTeacher(goal: Goal) {
     return this.http
       .post(`${API_URL}/teacher/goals/new`, goal);
   }
 
-  saveGoalStudent(goal: Goal): Observable<any> {
+  saveGoalStudent(goal: Goal) {
     return this.http
       .post(`${API_URL}/student/goals/new`, goal);
   }

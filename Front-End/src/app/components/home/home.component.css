@@ -11,9 +11,14 @@
   padding-top: 50px;
 } */
 
+body{
+  background-image: url("/assets/img/circles.png");
+  background-repeat: no-repeat;
+}
+
 #googlesign {
-  width: 50%;
-  height: 50%;
+  width: 35%;
+  height: 35%;
 }
 
 .column {
@@ -28,4 +33,8 @@
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
   text-align: center;
   background-color: #f1f1f1;
+  border-radius: 35px;
+}
+
+.rightc {
 }

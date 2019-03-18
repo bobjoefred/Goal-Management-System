@@ -4,7 +4,6 @@ import { GoalsApiService } from './goals-api.service';
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
 
-
 @Component({
   selector: 'app-goals',
   templateUrl: './goals.component.html',
@@ -30,9 +29,6 @@ export class GoalsComponent implements OnInit {
       );
   }
 
-  // ngOnDestroy() {
-  //   this.goalsListSubs.unsubscribe();
-  // }
   deleteGoalTeacher(GOAL_ID: number): void {
     this.goalsApi
       .deleteGoalTeacher(GOAL_ID)

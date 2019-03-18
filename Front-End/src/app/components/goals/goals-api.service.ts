@@ -7,7 +7,7 @@ import { Observable } from 'rxjs/Observable';
 @Injectable()
 export class GoalsApiService {
 
-  constructor(private readonly http: HttpClient) {
+  constructor(readonly http: HttpClient) {
   }
 
   static _handleError(err: HttpErrorResponse | any): Observable<any> {
@@ -37,12 +37,12 @@ export class GoalsApiService {
       .get<Array<Goal>>(`${API_URL}/student/goals`);
   }
 
-  saveGoalTeacher(goal: Goal) {
+  saveGoalTeacher(goal: Goal): Observable<any> {
     return this.http
       .post(`${API_URL}/teacher/goals/new`, goal);
   }
 
-  saveGoalStudent(goal: Goal) {
+  saveGoalStudent(goal: Goal): Observable<any> {
     return this.http
       .post(`${API_URL}/student/goals/new`, goal);
   }

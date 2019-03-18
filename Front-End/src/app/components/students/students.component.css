@@ -1,18 +1,3 @@
-.button1 {
-  background-color: #888;
-  border: none;
-  color: white;
-  padding: 10px;
-  text-align: center;
-  font-size: 16px;
-  cursor: pointer;
-  border-radius: 8px;
-  margin-left: 345px;
-}
-
-.button1:hover {
-  background-color: #b3b3b3;
-}
 
 .button3 {
   background-color: #888;
@@ -26,14 +11,6 @@
   margin-left: 150px;
 }
 
-.button3:hover {
-  background-color: #b3b3b3;
-}
-
-.button4:hover {
-  background-color: #ccffb3;
-}
-
 .button2 {
   background-color: #888;
   border: none;
@@ -45,8 +22,4 @@
   border-radius: 8px;
   border-color: #000000;
   margin-left: 10px;
-}
-
-.button2:hover {
-  background-color: #ff9980;
 }

@@ -29,7 +29,7 @@ def show_all_students_in_group_json(group_id):
     return flask.jsonify(student_list)
 
 
-def show_all_students_in_group(group_id, SESSION):
+def show_all_students_in_group(group_id):
     wanted_group = SESSION.query(Group).filter_by(id=group_id).one_or_none()
     return wanted_group.students
 
@@ -44,7 +44,7 @@ def show_all_student_goals(student_id):
     return flask.jsonify(goal_list)
 
 
-def get_group_by_teacher(teacher_id, SESSION):
+def get_group_by_teacher(teacher_id):
     wanted_group = SESSION.query(Group).filter_by(
         teacher_id=teacher_id).one_or_none()
     return wanted_group
@@ -58,7 +58,7 @@ def get_group_by_teacherjson(teacher_id):
     return flask.jsonify(group_student_list)
 
 
-def get_group_via_id(group_id, SESSION):
+def get_group_via_id(group_id):
     wanted_group = SESSION.query(Group).filter_by(id=group_id).one_or_none()
     return wanted_group
 
@@ -81,7 +81,7 @@ def get_group_by_studentjson(student_id):
     return group_student_list
 
 
-def get_group_by_student(student_id, SESSION):
+def get_group_by_student(student_id):
     wanted_student = SESSION.query(Student).filter_by(
         id=student_id).one_or_none()
     student_group_list = []
@@ -95,9 +95,9 @@ def get_group_by_student(student_id, SESSION):
 def create_groupjson():
     post = request.get_json()
     if request.method == 'POST':
-        newGroup = Group(name=post["group_name"],
+        new_group = Group(name=post["group_name"],
                          description=post["group_description"])
-    SESSION.add(newGroup)
+    SESSION.add(new_group)
     SESSION.commit()
     return flask.jsonify("Group added!"), 200
 
@@ -114,10 +114,9 @@ def assign_student_to_groupjson(student_id, group_id):
     return flask.jsonify("Student assigned!"), 200
 
 
-def assign_student_to_group(student_id, group_id, SESSION):
+def assign_student_to_group(student_id, group_id):
     student_group_link = StudentGroupLink(
         student_id=student_id, group_id=group_id)
-    modified_group = SESSION.query(Group).filter_by(id=group_id)
     SESSION.add(student_group_link)
     SESSION.commit()
 
@@ -129,12 +128,12 @@ def assign_teacher_to_groupjson(teacher_id, group_id):
     wanted_group = SESSION.query(Group).filter_by(id=group_id)
     wanted_teacher = SESSION.query(Teacher).filter_by(id=teacher_id)
     wanted_group.teacher = wanted_teacher
-    SESSION.add(group)
+    SESSION.add(wanted_group)
     SESSION.commit()
     return flask.jsonify("Teacher Assigned!"), 200
 
 
-def assign_teacher_to_group(group, teacher, SESSION):
+def assign_teacher_to_group(group, teacher):
     group.teacher = teacher
     SESSION.add(group)
     SESSION.commit()
@@ -146,87 +145,83 @@ def update_groupjson(group_id):
     if "id" not in post:
         return "ERROR: Not a valid ID \n", 404
     group_id = post["id"]
-    editedGroup = SESSION.query(Group).filter_by(id=group_id).one()
+    edited_group = SESSION.query(Group).filter_by(id=group_id).one()
     if "group_name" in post:
-        editedTrip.group_name = post["group_name"]
-    SESSION.add(editedGroup)
+        edited_group.group_name = post["group_name"]
+    SESSION.add(edited_group)
     SESSION.commit()
     return flask.jsonify("Group successfully updated! \n"), 200
 
 
-def create_group(name, description, SESSION):
+def create_group(name, description):
     group = Group(name=name, description=description)
     SESSION.add(group)
     SESSION.commit()
     return group
 
 
-def delete_group(group_id, SESSION):
+def delete_group(group_id):
     wanted_group = SESSION.query(Group).filter_by(id=group_id).one_or_none()
     SESSION.delete(wanted_group)
     SESSION.commit()
 
 
-def show_groups(SESSION):
-    groups = SESSION.query(Group).all()
-
-
 @APP.route('/loggedin/showgroups', methods=['GET'])
 def show_groupsjson():
     groups = SESSION.query(Group).all()
-    groupList = []
+    group_list = []
     # look in itemcatalog to see how the project deals with serialized objects
     for group in groups:
 
-        groupList.append(group.serialize)
-    #    studentList += jsonify(Student=student.serialize)
-    #    studentList += thisStudent
+        group_list.append(group.serialize)
+    #    student_list += jsonify(Student=student.serialize)
+    #    student_list += thisStudent
 
-    # print(studentList)
-    return flask.jsonify(groupList)
+    # print(student_list)
+    return flask.jsonify(group_list)
 
 
 @APP.route('/loggedin/<int:group_id>/deletegroup', methods=['DELETE'])
 def delete_groupjson(group_id):
-    groupToDelete = SESSION.query(Group).filter_by(id=group_id).one()
-    SESSION.delete(groupToDelete)
+    group_to_delete = SESSION.query(Group).filter_by(id=group_id).one()
+    SESSION.delete(group_to_delete)
     SESSION.commit()
 
     return flask.jsonify("Trip successfully deleted!"), 200
 
 
-def show_groups(SESSION):
+def show_groups():
     groups = SESSION.query(Group).all()
-    groupList = []
+    group_list = []
     # look in itemcatalog to see how the project deals with serialized objects
     for group in groups:
 
-        groupList.append(group.serialize)
-    #    studentList += jsonify(Student=student.serialize)
-    #    studentList += thisStudent
+        group_list.append(group.serialize)
+    #    student_list += jsonify(Student=student.serialize)
+    #    student_list += thisStudent
 
-    # print(studentList)
-    return flask.jsonify(groupList)
+    # print(student_list)
+    return flask.jsonify(group_list)
 
 
 @APP.route('/loggedin/createstudent', methods=['POST'])
 def create_studentjson():
     post = request.get_json()
     if request.method == 'POST':
-        newStudent = Student(name=post["student_name"])
-    SESSION.add(newStudent)
+        new_student = Student(name=post["student_name"])
+    SESSION.add(new_student)
     SESSION.commit()
     return flask.jsonify("Student added!"), 200
 
 
-def make_student(name, sesh):
+def make_student(name):
     if name is None:
         return "Must have a name, 404"
     else:
         student = Student(name=name)
 
-    sesh.add(student)
-    sesh.commit()
+    SESSION.add(student)
+    SESSION.commit()
     return student
 # creating a goal and assigning seperate
 # to assign a goal, create a new goal
@@ -237,13 +232,13 @@ def make_student(name, sesh):
 def create_teacherjson():
     post = request.get_json()
     if request.method == 'POST':
-        newTeacher = Teacher(name=post["teacher_name"])
-    SESSION.add(newTeacher)
+        new_teacher = Teacher(name=post["teacher_name"])
+    SESSION.add(new_teacher)
     SESSION.commit()
     return flask.jsonify("Teacher added!"), 200
 
 
-def create_teacher(name, login, password, SESSION):
+def create_teacher(name, login, password):
     teacher = Teacher(name=name, login=login, password=password)
     SESSION.add(teacher)
     SESSION.commit()
@@ -254,73 +249,73 @@ def create_teacher(name, login, password, SESSION):
 @APP.route('/loggedin/showstudents', methods=['GET'])
 def show_studentsjson():
     students = SESSION.query(Student).all()
-    studentList = []
+    student_list = []
     # look in itemcatalog to see how the project deals with serialized objects
     for student in students:
 
-        studentList.append(student.serialize)
-    #    studentList += jsonify(Student=student.serialize)
-    #    studentList += thisStudent
+        student_list.append(student.serialize)
+    #    student_list += jsonify(Student=student.serialize)
+    #    student_list += thisStudent
 
-    # print(studentList)
-    return flask.jsonify(studentList)
+    # print(student_list)
+    return flask.jsonify(student_list)
 
 
-def show_students(SESSION):
+def show_students():
     students = SESSION.query(Student).all()
-    studentList = []
+    student_list = []
     # look in itemcatalog to see how the project deals with serialized objects
     for student in students:
 
-        studentList.append(student.serialize)
-    #    studentList += jsonify(Student=student.serialize)
-    #    studentList += thisStudent
+        student_list.append(student.serialize)
+    #    student_list += jsonify(Student=student.serialize)
+    #    student_list += thisStudent
 
-    # print(studentList)
-    return flask.jsonify(studentList)
+    # print(student_list)
+    return flask.jsonify(student_list)
 
 
 @APP.route('/loggedin/showgoals', methods=['GET'])
 def showGoalsjson():
     goals = SESSION.query(Goal).all()
-    goalList = []
+    goal_list = []
     # look in itemcatalog to see how the project deals with serialized objects
     for goal in goals:
 
-        goalList.append(goal.serialize)
-    #    studentList += jsonify(Student=student.serialize)
-    #    studentList += thisStudent
+        goal_list.append(goal.serialize)
+    #    student_list += jsonify(Student=student.serialize)
+    #    student_list += thisStudent
 
-    # print(studentList)
-    return flask.jsonify(goalList)
+    # print(student_list)
+    return flask.jsonify(goal_list)
 
 
-def showGoals(SESSION):
+def show_goals():
     goals = SESSION.query(Goal).all()
-    goalList = []
+    goal_list = []
     # look in itemcatalog to see how the project deals with serialized objects
     for goal in goals:
 
-        goalList.append(goal.serialize)
-    #    studentList += jsonify(Student=student.serialize)
-    #    studentList += thisStudent
+        goal_list.append(goal.serialize)
+    #    student_list += jsonify(Student=student.serialize)
+    #    student_list += thisStudent
 
-    # print(studentList)
-    return flask.jsonify(goalList)
+    # print(student_list)
+    return flask.jsonify(goal_list)
 
 
-def showStudentGoals(student, SESSION):
+def showStudentGoals(student):
     goals = student.goals
-    goalList = []
+    goal_list = []
     # look in itemcatalog to see how the project deals with serialized objects
     for goal in goals:
 
-        goalList.append(goal.serialize)
-    #    studentList += jsonify(Student=student.serialize)
-    #    studentList += thisStudent
+        goal_list.append(goal.serialize)
+    #    student_list += jsonify(Student=student.serialize)
+    #    student_list += thisStudent
 
-    # print(studentList)
-    return flask.jsonify(goalList)
+    # print(student_list)
+    return flask.jsonify(goal_list)
 
 
 @APP.route('/loggedin/creategoal',
@@ -331,19 +326,19 @@ def create_goaljson():
             # date needs to be in the format 'xx/xx/xxxx',
             # but if the month is single digit just 'x/xx/xxxx'
             #    ex) date_str = '9/11/2018'
-            date_str = goal_duedate
+            date_str = goal_due_date
             format_str = '%d/%m/%Y'
-            goal_dueDate = datetime.strptime(date_str, format_str)
+            goal_due_date = datetime.strptime(date_str, format_str)
             assign_goal(
                 create_goal(
                     request.form['goal_name'],
                     request.form['goal_description'],
-                    goal_duedate,
-                    session1),
+                    goal_due_date,
+                    SESSION),
                 getStudent(
                     request.form['name'],
-                    session1),
-                session1)
+                    SESSION),
+                SESSION)
 
         except AttributeError:
             return render_template('nostudentexception.html')
@@ -352,7 +347,7 @@ def create_goaljson():
         return render_template('newgoal.html')
 
 
-def create_goal(name, description, dueDate, SESSION):
+def create_goal(name, description, dueDate):
     if name is None or description is None :
         return "Missing name or description, 404"
     else:
@@ -375,7 +370,7 @@ def assign_teacher(teacher_id, goal_id):
     return flask.jsonify("Teacher assigned to goal!"), 200
 
 
-def assign_teacher(teacher, goal, SESSION):
+def assign_teacher(teacher, goal):
     goal.createdBy = teacher.id
     SESSION.add(goal)
     SESSION.commit()
@@ -393,7 +388,7 @@ def assign_goal(student_id, goal_id):
     return flask.jsonify("Student assigned to goal!"), 200
 
 
-def assign_goal(student, goal, SESSION):
+def assign_goal(student, goal):
     student_goal_link = StudentGoalLink(
         student_id=student.id,
         goal_id=goal.id,
@@ -402,26 +397,26 @@ def assign_goal(student, goal, SESSION):
     SESSION.commit()
 
 
-def complete_goal(student_id, goal_id, completed, SESSION):
+def complete_goal(student_id, goal_id, completed):
     # must have
-    wantedGoalLink = SESSION.query(StudentGoalLink).filter_by(
+    wanted_goal_link = SESSION.query(StudentGoalLink).filter_by(
         student_id=student_id).filter_by(goal_id=goal_id).one()
-    wantedGoalLink.isCompleted = completed
-    SESSION.add(wantedGoalLink)
+    wanted_goal_link.isCompleted = completed
+    SESSION.add(wanted_goal_link)
     SESSION.commit()
-    return wantedGoalLink
+    return wanted_goal_link
 
 
 @APP.route(
     '/loggedin/<int:student_id>/<int:goal_id>/assigngoal',
     methods=['POST'])
-def complete_goaljson(student_id, goal_id, SESSION):
+def complete_goaljson(student_id, goal_id):
     # must have a "completed" boolean field that is passed in as a "POST"
     # (must be called completed as of now)
 
-    wantedGoalLink = SESSION.query(StudentGoalLink).filter_by(
-        student_id=studentID).filter_by(goal_id=goalID).one()
-    wantedGoalLink.isCompleted = request.form['completed']
-    SESSION.add(wantedGoalLink)
+    wanted_goal_link = SESSION.query(StudentGoalLink).filter_by(
+        student_id=student_id).filter_by(goal_id=goal_id).one()
+    wanted_goal_link.isCompleted = request.form['completed']
+    SESSION.add(wanted_goal_link)
     SESSION.commit()
     return flask.jsonify("Student assigned to goal!"), 200

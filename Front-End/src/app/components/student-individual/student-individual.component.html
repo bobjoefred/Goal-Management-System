@@ -1,45 +1,27 @@
 <!DOCTYPE html>
 
 <html>
-<!-- <title>W3.CSS Template</title>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
-<link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Roboto'>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"> -->
+<head>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+</head>
 
-<style>
-html,body,h1,h2,h3,h4,h5,h6 {font-family: "Roboto", sans-serif}
-table {
-  border-collapse: collapse;
-}
-table, td, th {
-  border: 1px solid;
-}
-
-td {
-  height: 40px;
-}
-
-th {
-  height: 30px;
-}
-</style>
 
 <body class="w3-light-white">
 
-  <div class="cardleft">
-    <h3>Resources</h3>
-    <p>Create New Goal</p>
-    <p>Home</p>
-  </div>
+  <div class="row">
+    <div class="col-sm-3">
+      <!-- <div class="cardleft"> -->
+        <h3>Resources</h3>
+        <p>Create New Goal</p>
+        <p>Home</p>
+    </div>
 
-    <div class="card">
-      <h3>Your Recent Progress</h3>
-        <table class="table2" style="width:90%">
-          <thead>
-            <tr><th>Date Assigned</th> <th>Goal Assigned</th> <th>Goal Completed</th></tr>
-          </thead>
+    <div class="col-sm-6">
+        <h3>Your Recent Progress</h3>
+          <table class="table2" style="width:90%">
+            <thead>
+              <tr><th>Date Assigned</th> <th>Goal Assigned</th> <th>Goal Completed</th></tr>
+            </thead>
           <tbody>
             <tr class="danger"><td>January 24th, 2019</td><td>Complete Student Page</td><td>No</td></tr>
             <tr class="sucess"><td>January 18th, 2019</td><td>Finish Teacher Page</td><td>Yes</td></tr>
@@ -50,6 +32,7 @@ th {
           </tbody>
         </table>
     </div>
+  </div>
 
 
 </body>

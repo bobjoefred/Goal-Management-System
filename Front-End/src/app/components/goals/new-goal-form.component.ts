@@ -18,15 +18,15 @@ export class NewGoalFormComponent {
 
   constructor(private readonly goalsApi: GoalsApiService, private readonly router: Router) { }
 
-  updateGoalTitle(event: any): Observable<any> {
+  updateGoalTitle(event: any) {
     this.goal.goalName = event.target.value;
   }
 
-  updateGoalDescription(event: any): Observable<any> {
+  updateGoalDescription(event: any) {
     this.goal.description = event.target.value;
   }
 
-  saveGoalTeacher(event: any): Observable<any> {
+  saveGoalTeacher(event: any) {
     this.goalsApi
       .saveGoalTeacher(this.goal)
       .subscribe(
@@ -36,7 +36,7 @@ export class NewGoalFormComponent {
       );
   }
 
-  saveGoalStudent(event: any): Observable<any> {
+  saveGoalStudent(event: any) {
     this.goalsApi
       .saveGoalStudent(this.goal)
       .subscribe(

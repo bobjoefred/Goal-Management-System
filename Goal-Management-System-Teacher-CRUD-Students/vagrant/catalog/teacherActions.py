@@ -1,11 +1,12 @@
 """Module for Teacher and Student "actions."" """
+from datetime import datetime
 import flask
-from flask import Flask, render_template, request, redirect, url_for, jsonify
+from flask import Flask, render_template, request
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from database_setup import Base, Teacher, Student
 from database_setup import Goal, StudentGoalLink, Group, StudentGroupLink
-from sqlalchemy import DateTime
+
 
 APP = Flask(__name__)
 
@@ -16,18 +17,14 @@ Base.metadata.bind = ENGINE
 DB_SESSION = sessionmaker(bind=ENGINE)
 SESSION = DB_SESSION()
 
-# TODO weeks 3/4~3/11
-# - Linted of everything we have now
-# - 1 or two test cases per function
 
-
-def getStudent(name):
+def get_student(name):
     """Grab a student from a database.
 
     Keyword arguments:
     name -- name of student
     """
-    wanted_student = session.query(Student).filter(
+    wanted_student = SESSION.query(Student).filter(
         Student.name == name).first()
     return wanted_student
 
@@ -158,7 +155,7 @@ def create_groupjson():
     post = request.get_json()
     if request.method == 'POST':
         new_group = Group(name=post["group_name"],
-                         description=post["group_description"])
+                          description=post["group_description"])
     SESSION.add(new_group)
     SESSION.commit()
     return flask.jsonify("Group added!"), 200
@@ -459,7 +456,7 @@ def create_goaljson(date_str):
                     request.form['goal_description'],
                     goal_due_date,
                     SESSION),
-                getStudent(
+                get_student(
                     request.form['name'],
                     SESSION),
                 SESSION)
@@ -477,14 +474,13 @@ def create_goal(name, description, due_date):
     description -- choice of description for goal
     due_date -- date in the format of 'xx/xx/xxxx'
     """
-    if name is None or description is None :
+    if name is None or description is None:
         return "Missing name or description, 404"
     else:
-        goal = Goal(name=name, description=description)
-    goal.date = due_date
-    SESSION.add(goal)
+        new_goal = Goal(name=name, description=description, due_date=due_date)
+    SESSION.add(new_goal)
     SESSION.commit()
-    return goal
+    return new_goal
 
 
 @APP.route(

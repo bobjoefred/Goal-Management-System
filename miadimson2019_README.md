@@ -23,6 +23,10 @@ Finally, run `python teacherActions.py`
 
 You may need to install flask_cors for cross-origin resource sharing, to do this, run `sudo pip install -U flask-cors`
 
+#### Database Populator:
+
+To run the database populator: run `python database_populator.py` 
+
 
 ### Frontend:
 
@@ -32,7 +36,6 @@ To run the front end, run:
 Once in the Front-End directory, run `ng serve` to run the front end program
 
 You may need to run `npm install` before running `ng serve` if the program doesn't run correctly
-
 
 ## Tasks to do:
 

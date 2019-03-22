@@ -1,0 +1,10 @@
+{
+  "rulesDirectory": [
+    "node_modules/codelyzer"
+  ],
+  "extends": ["angular-tslint-rules"],
+  "rules": {
+    "i18n": [false, "check-id", "check-text"] 
+  }
+
+}

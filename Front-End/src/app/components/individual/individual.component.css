@@ -1,0 +1,18 @@
+.w3-container {
+
+}
+
+.table2 {
+  border-collapse: collapse;
+  border: 1px solid black;
+  text-align: center;
+  margin-left: 40px;
+}
+
+.danger {
+  background-color: #f9c0c0;
+}
+
+.sucess {
+  background-color: #c2ffb5;
+}

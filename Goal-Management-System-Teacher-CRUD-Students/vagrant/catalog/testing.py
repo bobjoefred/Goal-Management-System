@@ -84,9 +84,10 @@ class TestApp(unittest.TestCase):
         test_student2 = make_student("testy studenty")
         assign_student_to_group(test_student.id, test_group3.id)
         assign_student_to_group(test_student2.id, test_group3.id)
-        list = [{'name': u'test student', 'id': test_student.id}, {'name': u'testy studenty', 'id': test_student2.id}]
+        serialized_list = [{'name': u'test student', 'id': test_student.id},
+                           {'name': u'testy studenty', 'id': test_student2.id}]
         self.assertEqual(
-            list,
+            serialized_list,
             show_all_students_in_group_json(
                 test_group3.id).get_json())
 
@@ -105,7 +106,8 @@ class TestApp(unittest.TestCase):
         test_goal2 = create_goal("test goal", "some description", test_date)
         assign_goal(test_student, test_goal)
         assign_goal(test_student, test_goal2)
-        goal_list = [{'name': u'test goal', 'id': test_goal.id}, {'name': u'test goal', 'id': test_goal2.id}]
+        goal_list = [{'name': u'test goal', 'id': test_goal.id},
+                     {'name': u'test goal', 'id': test_goal2.id}]
         self.assertEqual(
             goal_list,
             show_all_student_goalsjson(

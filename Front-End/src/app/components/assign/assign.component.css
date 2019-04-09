@@ -66,10 +66,8 @@
 
 .card {
   margin-top: 2%;
-  margin-left: 2%;
 }
 
-.container {
-  margin-left: 23%;
-  width: 75%;
+#card1 {
+margin-left: 15%;
 }

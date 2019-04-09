@@ -7,7 +7,6 @@
   font-size: 16px;
   cursor: pointer;
   border-radius: 8px;
-  margin-left: 345px;
 }
 
 .button1:hover {
@@ -23,7 +22,6 @@
   font-size: 16px;
   cursor: pointer;
   border-radius: 8px;
-  margin-left: 150px;
 }
 
 .button3:hover {
@@ -44,7 +42,6 @@
   cursor: pointer;
   border-radius: 8px;
   border-color: #000000;
-  margin-left: 700px;
 }
 
 .button2 {
@@ -57,7 +54,7 @@
   cursor: pointer;
   border-radius: 8px;
   border-color: #000000;
-  margin-left: 10px;
+
 }
 
 .button2:hover {
@@ -69,7 +66,6 @@
   margin-left: 2%;
 }
 
-.container {
-  margin-left: 23%;
-  width: 75%;
+#card1 {
+margin-left: 15%;
 }

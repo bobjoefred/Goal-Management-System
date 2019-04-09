@@ -1,4 +1,50 @@
-.w3-container {
+.button1 {
+  background-color: #888;
+  border: none;
+  color: white;
+  padding: 10px;
+  text-align: center;
+  font-size: 16px;
+  cursor: pointer;
+  border-radius: 8px;
+  margin-left: 345px;
+}
+
+.button1:hover {
+  background-color: #b3b3b3;
+}
+
+.button3 {
+  background-color: #888;
+  border: none;
+  color: white;
+  padding: 10px;
+  text-align: center;
+  font-size: 16px;
+  cursor: pointer;
+  border-radius: 8px;
+  margin-left: 150px;
+}
+
+.button3:hover {
+  background-color: #b3b3b3;
+}
+
+.button4:hover {
+  background-color: #ccffb3;
+}
+
+.button4 {
+  background-color: #888;
+  border: none;
+  color: white;
+  padding: 10px;
+  text-align: center;
+  font-size: 16px;
+  cursor: pointer;
+  border-radius: 8px;
+  border-color: #000000;
+  margin-left: 700px;
 }
 
 .button2 {
@@ -10,17 +56,20 @@
   font-size: 16px;
   cursor: pointer;
   border-radius: 8px;
-  margin-left: 330px;
+  border-color: #000000;
+  margin-left: 10px;
 }
 
-/* .button2: hover {
-    background-color: #8886;
-} */
-
-.table1 {
-  margin-left: 80px;
+.button2:hover {
+  background-color: #ff9980;
 }
 
-/* .ahistory {
-  float: right;
-} */
+.card {
+  margin-top: 2%;
+  margin-left: 2%;
+}
+
+.container {
+  margin-left: 23%;
+  width: 75%;
+}

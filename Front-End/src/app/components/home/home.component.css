@@ -1,3 +1,6 @@
+.body{
+  background-color: #888;
+}
 
 .form-signin {
 margin-left: 30%;
@@ -5,6 +8,12 @@ margin-right: 30%;
 text-align: center;
 }
 
+
+.sqaure {
+  height: 50px;
+  width: 50px;
+  background-color: #888;
+}
 #container {
   margin-left: 20%;
   margin-right: 20%;

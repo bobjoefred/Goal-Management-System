@@ -21,7 +21,11 @@ Finally, run `ng serve`
 
 HeaderComponent:
 
-The HeaderComponent is the navbar that is located at the top of the website. The navbar consists of many components which allows one to navigate to different web pages. The HeaderComponent is in charge of separating the Teacher Components from the Student Components. To access the student website, click on the header component and then click on the file labeled header.component.ts. Once in the file, set the "is teacher" to true. To access the teacher website, repeat the same steps above, but set "is teacher" to false. 
+The HeaderComponent is the navbar that is located at the top of the website. The navbar consists of many components which allows one to navigate to different web pages. The HeaderComponent is in charge of separating the Teacher Components from the Student Components. To access the student website, click on the header component and then click on the file labeled header.component.ts. Once in the file, set the "is teacher" to true. To access the teacher website, repeat the same steps above, but set "is teacher" to false.
+
+HomeComponent:
+
+The home component is the login page for both students and teachers. On the student and teacher navbar, the home component is labeled "login".
 
 ### Teacher Components:
 

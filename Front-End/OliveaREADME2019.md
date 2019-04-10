@@ -10,8 +10,11 @@ My part of the project was to design the front end. So far, the website is fully
 
 ### Front End:
 To run the front end, run `cd version_control/`
+
 Next, run `cd Goal-Management-System`
+
 Then, run `cd Front-End/`
+
 Finally, run `ng serve`
 
 ## Tasks To-Do:

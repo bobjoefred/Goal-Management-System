@@ -20,4 +20,4 @@ Finally, run `ng serve`
 ## Tasks To-Do:
 Currently, the header thinks the page is collapsed, so you need to make the header expand across the whole top of the page.
 
-If we want Chadwick to use this website, we need to make the page full functional. You must merge with backend to see what is functional and what is not.
+If we want Chadwick to use this website, we need to make the page fully functional. You must merge with backend to see what is functional and what is not.

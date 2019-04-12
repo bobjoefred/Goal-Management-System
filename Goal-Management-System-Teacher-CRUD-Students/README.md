@@ -1,15 +1,15 @@
 # Goal-Management-System
-#About
+# About
 This project at its core allows teachers to assign goals to a student.
 The students are able to view the goals assigned to them, and mark those goals  
 as completed. Teachers are able to create, view, edit, all students and goals.
 
-#Requirements
+# Requirements
 - Virtual Box
 - Ubuntu Vagrant
 - Unix based command line utility
 
-#setUp
+# setUp
 - If no Vagrant file exists, put the Ubuntu Vagrant file in the root project director
 - Open your Command Line Utility
 
@@ -19,17 +19,17 @@ as completed. Teachers are able to create, view, edit, all students and goals.
 4. Navigate to /vagrant/goal-management
 5. delete 'testing.db' if one is present
 
-#Configuration
+# Configuration
 1. Conduct setup  
 2. Confirm that the correct users are given Teacher/Student status
 
-#Operation
+# Operation
 1. Conduct setup
 2. Input 'python database_populator.py'
 3. Input 'python database_setup.py'
 4. Input 'python login.py'
 
-#Database Object Explanations
+# Database Object Explanations
 - Student
   - Name: name of the student
   - id: auto-assigned id given to student upon creation
@@ -59,10 +59,27 @@ as completed. Teachers are able to create, view, edit, all students and goals.
 - StudentGroupLink
   - Ties student id's to group. Upon grouping group id's with student id's, they are stored through 'students' in the group class, and 'group' in the student class(as student/group objects).
 
-#TODO
+# TODO
 - Implementation of group CRUD into the teachers' side functions
   - Necessary methods are already made/tested in goal-management/teacher_actions.py, and catalog/testing.py  
     respectively
 - Implementation of due dates of goals
   - Already implemented in methods, however not used in catalog/login.py
     - Example of usage in catalog/testing.py (specific usage of datetime can be unclear)
+# How to:
+- For all the actions below, have the server already up and running(go through steps in 'Operation' and 'setup')
+- Add student(only works when logged in as a teacher)
+  - Click google login button
+  - Click 'Add Students Here'
+  - Fill in name, click submit
+- Add teacher
+  - Open database_populator.py in your editor
+  - Ensure that the desired teacher to be added is in the populator, and is tied to the correct email
+- Assign goal(only works when logged in as a teacher)
+  - Click google login button  
+  - Click 'Add Goals Here'
+  - Fill in fields for goal name('gname'), description, and the name of the student that it needs to be assigned to
+- Mark goal as completed
+  - Click google login button (teacher or student)
+  - Click 'Change Completion Status'
+  - Fill in goal name, student name, and click the button for True/False

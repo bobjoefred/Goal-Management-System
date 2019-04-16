@@ -31,10 +31,13 @@ Currently, I have made a footer component but there is no code in it. Once code 
 ### Teacher Components:
 
 Assign Component:
+The assign component is known as the "assign goals" page on the website. This component is the designed for teachers when they want to assign a specific goal to a student or multiple students. Currently, the page is not functional.
 
 Individual Component:
+The individual component is known as the "Individual Students" page on the website. This page allows teachers to view individual student progress through a table. This page is not linked to the backend so the page is just a design.
 
 Teachers Component:
+The teacher component is known as "home" on the website. This page is the home page for teachers. This page lists what classes the teachers teach and the overarching theme of each class. Again, this page is not functional and is design only. 
 
 ### Student Components:
 

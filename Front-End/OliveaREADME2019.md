@@ -25,11 +25,30 @@ The HeaderComponent is the navbar that is located at the top of the website. The
 HomeComponent:
 The home component is the login page for both students and teachers. On the student and teacher navbar, the home component is labeled "login".
 
+FooterComponent:
+Currently, I have made a footer component but there is no code in it. Once code is added to the footer.component.html and the footer.component.css, the same footer should appear on the bottom of every component.
+
 ### Teacher Components:
+
+Assign Component:
+
+Individual Component:
+
+Teachers Component:
 
 ### Student Components:
 
+Student-History Component:
+
+Student-Individual Component:
+
+Student-Reject Component:
+
+Students Component:
+
 ## Tasks To-Do:
 Currently, the header thinks the page is collapsed, so you need to make the header expand across the whole top of the page.
+
+Add Code into the footer component in order to have the same footer on every page.
 
 If we want Chadwick to use this website, we need to make the page fully functional. You must merge with backend to see what is functional and what is not.
